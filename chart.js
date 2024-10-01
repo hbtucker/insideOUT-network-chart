@@ -18,12 +18,6 @@ function createChart(data) {
   const teamNodes = data.nodes.filter(d => d.level === "2");
   const individualNodes = data.nodes.filter(d => d.level === "3");
 
-  // Create hierarchical structure
-  const root = d3.stratify()
-    .id(d => d.id)
-    .parentId(d => d.parent)
-    (data.nodes);
-
   // Create radial layout
   const radius = Math.min(width, height) / 2 - 100;
   const departmentRadius = radius * 0.4;
@@ -46,28 +40,29 @@ function createChart(data) {
   });
 
   // Position teams
-  root.each(d => {
-    if (d.depth === 1) {
-      const parent = departmentNodes.find(p => p.id === d.parent.id);
-      const siblings = d.parent.children;
+  teamNodes.forEach(team => {
+    const parent = departmentNodes.find(d => d.id === team.parent);
+    if (parent) {
+      const siblings = teamNodes.filter(t => t.parent === parent.id);
       const siblingAngle = departmentAngle / (siblings.length + 1);
       const startAngle = Math.atan2(parent.y - height / 2, parent.x - width / 2) - departmentAngle / 2;
-      siblings.forEach((child, i) => {
-        const angle = startAngle + (i + 1) * siblingAngle;
-        const [x, y] = teamLayout([{ x: angle }]);
-        child.x = x + width / 2;
-        child.y = y + height / 2;
-      });
+      const index = siblings.indexOf(team);
+      const angle = startAngle + (index + 1) * siblingAngle;
+      const [x, y] = teamLayout([{ x: angle }]);
+      team.x = x + width / 2;
+      team.y = y + height / 2;
     }
   });
 
   // Position individuals
   individualNodes.forEach(d => {
     const parent = teamNodes.find(p => p.id === d.parent);
-    const angle = Math.atan2(parent.y - height / 2, parent.x - width / 2);
-    const distance = 40;
-    d.x = parent.x + Math.cos(angle) * distance;
-    d.y = parent.y + Math.sin(angle) * distance;
+    if (parent) {
+      const angle = Math.atan2(parent.y - height / 2, parent.x - width / 2);
+      const distance = 40;
+      d.x = parent.x + Math.cos(angle) * distance;
+      d.y = parent.y + Math.sin(angle) * distance;
+    }
   });
 
   // Create links
@@ -82,8 +77,8 @@ function createChart(data) {
   }
 
   const teamLinks = data.links.filter(d => 
-    d.source.level === "1" && d.target.level === "2" ||
-    d.source.level === "2" && d.target.level === "3"
+    (d.source.level === "1" && d.target.level === "2") ||
+    (d.source.level === "2" && d.target.level === "3")
   );
 
   // Draw links
