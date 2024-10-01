@@ -7,8 +7,31 @@ function chart(data) {
   const links = data.links.map(d => Object.create(d));
   const nodes = data.nodes.map(d => Object.create(d));
 
-  // Remove connections between top-level departments
-  // Instead, we'll add connections between teams within departments later
+  // Add connections between top-level departments
+  const departments = nodes.filter(d => d.level === "1");
+  for (let i = 0; i < departments.length; i++) {
+    for (let j = i + 1; j < departments.length; j++) {
+      links.push({
+        source: departments[i].id,
+        target: departments[j].id,
+        relationship: "Department Connection"
+      });
+    }
+  }
+
+  // Add connections between teams within departments
+  departments.forEach(department => {
+    const departmentTeams = nodes.filter(n => n.level === "2" && links.some(l => l.source === department.id && l.target === n.id));
+    for (let i = 0; i < departmentTeams.length; i++) {
+      for (let j = i + 1; j < departmentTeams.length; j++) {
+        links.push({
+          source: departmentTeams[i].id,
+          target: departmentTeams[j].id,
+          relationship: "Team Connection"
+        });
+      }
+    }
+  });
 
   // Custom force to separate nodes by level
   function forceByLevel(alpha) {
@@ -76,23 +99,9 @@ function chart(data) {
     }
   }
 
-  // Add connections between teams within departments
-  const departments = nodes.filter(d => d.level === "1");
-  departments.forEach(department => {
-    const departmentTeams = nodes.filter(n => n.level === "2" && links.some(l => l.source === department.id && l.target === n.id));
-    for (let i = 0; i < departmentTeams.length; i++) {
-      for (let j = i + 1; j < departmentTeams.length; j++) {
-        links.push({
-          source: departmentTeams[i].id,
-          target: departmentTeams[j].id,
-          relationship: "Team Connection"
-        });
-      }
-    }
-  });
-
   const simulation = d3.forceSimulation(nodes)
       .force("link", d3.forceLink(links).id(d => d.id).distance(d => {
+        if (d.relationship === "Department Connection") return 200;
         if (d.relationship === "Team Connection") return 80;
         if (d.source.level === "1" && d.target.level === "2") return 20;
         return 30;
@@ -125,8 +134,12 @@ function chart(data) {
     .selectAll("line")
     .data(links)
     .join("line")
-      .attr("stroke-width", d => d.relationship === "Team Connection" ? 1 : 1)
-      .attr("stroke-dasharray", d => d.relationship === "Team Connection" ? "5,5" : "none");
+      .attr("stroke-width", d => d.relationship === "Department Connection" ? 2 : 1)
+      .attr("stroke-dasharray", d => {
+        if (d.relationship === "Department Connection") return "10,10";
+        if (d.relationship === "Team Connection") return "5,5";
+        return "none";
+      });
 
   const node = svg.append("g")
       .attr("stroke", "#fff")
