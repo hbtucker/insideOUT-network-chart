@@ -1,4 +1,3 @@
-// chart.js
 const width = 1200;
 const height = 800;
 const colors = ["#f6f6f6", "#b1b1b1", "#ffc433", "#f4a261", "#e76f51"];
@@ -7,7 +6,7 @@ function chart(data) {
   const links = data.links.map(d => Object.create(d));
   const nodes = data.nodes.map(d => Object.create(d));
 
-// Add connections between top-level departments
+  // Add connections between top-level departments
   const departments = nodes.filter(d => d.level === "1");
   for (let i = 0; i < departments.length; i++) {
     for (let j = i + 1; j < departments.length; j++) {
@@ -23,9 +22,9 @@ function chart(data) {
   function forceByLevel(alpha) {
     const centerX = width / 2;
     const centerY = height / 2;
-    const departmentRadius = 100;
-    const teamRadius = 40;
-    const maxAngle = Math.PI / 3.6; // About 50 degrees in radians
+    const departmentRadius = 200;
+    const teamRadius = 350;
+    const maxAngle = Math.PI / 3; // About 60 degrees in radians
 
     // Group teams by department
     const teamsByDepartment = {};
@@ -60,8 +59,8 @@ function chart(data) {
             const teamAngleOffset = maxAngle * ((teamIndex - (teamCount - 1) / 2) / (teamCount - 1));
             const teamAngle = departmentAngle + teamAngleOffset;
             
-            const x = centerX + Math.cos(teamAngle) * (departmentRadius + teamRadius);
-            const y = centerY + Math.sin(teamAngle) * (departmentRadius + teamRadius);
+            const x = centerX + Math.cos(teamAngle) * teamRadius;
+            const y = centerY + Math.sin(teamAngle) * teamRadius;
             node.x += (x - node.x) * alpha;
             node.y += (y - node.y) * alpha;
           }
@@ -72,7 +71,7 @@ function chart(data) {
           const parentNode = nodes.find(n => n.id === parent);
           if (parentNode) {
             const angle = Math.atan2(parentNode.y - centerY, parentNode.x - centerX);
-            const individualRadius = 40;
+            const individualRadius = 50;
             const x = parentNode.x + Math.cos(angle) * individualRadius;
             const y = parentNode.y + Math.sin(angle) * individualRadius;
             node.x += (x - node.x) * alpha;
@@ -85,20 +84,20 @@ function chart(data) {
 
   const simulation = d3.forceSimulation(nodes)
       .force("link", d3.forceLink(links).id(d => d.id).distance(d => {
-        if (d.relationship === "Department Connection") return 80;
-        if (d.source.level === "1" && d.target.level === "2") return 80; // Reduced from 150
-        return 20;
+        if (d.relationship === "Department Connection") return 300;
+        if (d.source.level === "1" && d.target.level === "2") return 150;
+        return 50;
       }))
       .force("charge", d3.forceManyBody().strength(d => {
-        if (d.level === "1") return -50;
-        if (d.level === "2") return -30;
-        return -20;
+        if (d.level === "1") return -1000;
+        if (d.level === "2") return -500;
+        return -100;
       }))
       .force("center", d3.forceCenter(width / 2, height / 2))
       .force("collide", d3.forceCollide().radius(d => {
-        if (d.level === "1") return 40
-        if (d.level === "2") return 20;
-        return 20;
+        if (d.level === "1") return 65;
+        if (d.level === "2") return 50;
+        return 25;
       }))
       .force("byLevel", forceByLevel);
 
@@ -126,7 +125,7 @@ function chart(data) {
     .selectAll("circle")
     .data(nodes)
     .join("circle")
-      .attr("r", d => d.level === "1" ? 30 : d.level === "2" ? 20 : 10)
+      .attr("r", d => d.level === "1" ? 65 : d.level === "2" ? 50 : 25)
       .attr("fill", d => colors[d.level - 1]);
 
   const label = svg.append("g")
@@ -137,7 +136,7 @@ function chart(data) {
       .attr("text-anchor", "middle")
       .attr("dominant-baseline", "central")
       .text(d => d.id)
-      .attr("font-size", d => d.level === "1" ? "10px" : d.level === "2" ? "8px" : "7px")
+      .attr("font-size", d => d.level === "1" ? "12px" : d.level === "2" ? "10px" : "8px")
       .attr("fill", "black")
       .style("font-family", "Poppins, sans-serif")
       .style("pointer-events", "none");
@@ -208,4 +207,3 @@ d3.json("data_org-chart-network.json").then(data => {
   const chartElement = chart(data);
   document.getElementById("chart").appendChild(chartElement);
 }).catch(error => console.error("Error loading the data: ", error));
-
