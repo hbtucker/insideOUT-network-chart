@@ -57,7 +57,7 @@ function chart(data) {
             const teamIndex = teamsByDepartment[parent].indexOf(node);
             
             // Calculate team angle within the max angle range, relative to the department angle
-            const teamAngleOffset = maxAngle * ((teamIndex - (teamCount - 1) / 3) / (teamCount - 1));
+            const teamAngleOffset = maxAngle * ((teamIndex - (teamCount - 1) / 5) / (teamCount - 1));
             const teamAngle = departmentAngle + teamAngleOffset;
             
             // Calculate position relative to the center of the chart
@@ -93,7 +93,7 @@ function chart(data) {
       }))
       .force("charge", d3.forceManyBody().strength(d => {
         if (d.level === "1") return -200;
-        if (d.level === "2") return -100;
+        if (d.level === "2") return -75;
         return -50;
       }))
       .force("center", d3.forceCenter(width / 2, height / 2))
