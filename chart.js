@@ -61,8 +61,8 @@ function chart(data) {
             
             const x = centerX + Math.cos(teamAngle) * teamRadius;
             const y = centerY + Math.sin(teamAngle) * teamRadius;
-            node.x += (x - node.x) * alpha;
-            node.y += (y - node.y) * alpha;
+            node.x += (x - node.x) * alpha * 2;
+            node.y += (y - node.y) * alpha * 2;
           }
         }
       } else if (node.level === "3") {
@@ -85,18 +85,18 @@ function chart(data) {
   const simulation = d3.forceSimulation(nodes)
       .force("link", d3.forceLink(links).id(d => d.id).distance(d => {
         if (d.relationship === "Department Connection") return 80;
-        if (d.source.level === "1" && d.target.level === "2") return 50;
+        if (d.source.level === "1" && d.target.level === "2") return 25;
         return 30;
       }))
       .force("charge", d3.forceManyBody().strength(d => {
         if (d.level === "1") return -80;
-        if (d.level === "2") return -50;
+        if (d.level === "2") return -25;
         return -50;
       }))
       .force("center", d3.forceCenter(width / 2, height / 2))
       .force("collide", d3.forceCollide().radius(d => {
         if (d.level === "1") return 40;
-        if (d.level === "2") return 30;
+        if (d.level === "2") return 5;
         return 15;
       }))
       .force("byLevel", forceByLevel);
