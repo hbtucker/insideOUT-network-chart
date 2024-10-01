@@ -1,16 +1,18 @@
 // chart.js
 const width = 1200;
 const height = 800;
-const colors = ["#264653", "#2a9d8f", "#e9c46a", "#f4a261", "#e76f51"];
+const colors = ["#ffc433", "#2a9d8f", "#e9c46a", "#f4a261", "#e76f51"];
 
 function chart(data) {
   const links = data.links.map(d => Object.create(d));
   const nodes = data.nodes.map(d => Object.create(d));
 
   const simulation = d3.forceSimulation(nodes)
-      .force("link", d3.forceLink(links).id(d => d.id))
-      .force("charge", d3.forceManyBody().strength(d => -50 * (d.level === "1" ? 3 : d.level === "2" ? 2 : 1)))
-      .force("center", d3.forceCenter(width / 2, height / 2));
+      .force("link", d3.forceLink(links).id(d => d.id).distance(50))
+      .force("charge", d3.forceManyBody().strength(d => -150 * (d.level === "1" ? 3 : d.level === "2" ? 2 : 1)))
+      .force("center", d3.forceCenter(width / 2, height / 2))
+      .force("x", d3.forceX(width / 2).strength(0.1))
+      .force("y", d3.forceY(height / 2).strength(0.1));
 
   const svg = d3.create("svg")
       .attr("viewBox", [0, 0, width, height]);
@@ -32,8 +34,17 @@ function chart(data) {
       .attr("r", d => d.level === "1" ? 30 : d.level === "2" ? 20 : 10)
       .attr("fill", d => colors[d.level - 1]);
 
-  node.append("title")
-      .text(d => d.id);
+  const label = svg.append("g")
+      .attr("class", "labels")
+      .selectAll("text")
+      .data(nodes)
+      .join("text")
+      .attr("text-anchor", "middle")
+      .attr("dominant-baseline", "central")
+      .text(d => d.id)
+      .attr("font-size", d => d.level === "1" ? "12px" : d.level === "2" ? "10px" : "8px")
+      .attr("fill", "white")
+      .style("pointer-events", "none");
 
   const tooltip = d3.select("body").append("div")
       .attr("class", "tooltip")
@@ -63,6 +74,10 @@ function chart(data) {
     node
         .attr("cx", d => d.x)
         .attr("cy", d => d.y);
+
+    label
+        .attr("x", d => d.x)
+        .attr("y", d => d.y);
   });
 
   const drag = d3.drag()
