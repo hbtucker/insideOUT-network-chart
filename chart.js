@@ -23,8 +23,9 @@ function chart(data) {
   function forceByLevel(alpha) {
     const centerX = width / 2;
     const centerY = height / 2;
-    const departmentRadius = 500;
-    const teamRadius = 100;
+    const departmentRadius = 150;
+    const teamRadius = 100; // Reduced from 300 to bring teams closer
+    const maxAngle = Math.PI / 3.6; // About 50 degrees in radians
 
     for (let node of nodes) {
       if (node.level === "1") {
@@ -36,9 +37,13 @@ function chart(data) {
         if (parent) {
           const parentNode = nodes.find(n => n.id === parent);
           if (parentNode) {
-            const angle = (2 * Math.PI * Math.random()); // Random angle for team distribution
-            const x = parentNode.x + Math.cos(angle) * teamRadius * 0.5;
-            const y = parentNode.y + Math.sin(angle) * teamRadius * 0.5;
+            const departmentIndex = departments.findIndex(d => d.id === parent);
+            const departmentAngle = (2 * Math.PI * departmentIndex) / departments.length;
+            const teamCount = links.filter(l => l.source === parent && l.target !== parent).length;
+            const teamIndex = links.filter(l => l.source === parent && l.target !== parent).findIndex(l => l.target === node.id);
+            const angle = departmentAngle + (maxAngle * (teamIndex - (teamCount - 1) / 2) / (teamCount - 1));
+            const x = centerX + Math.cos(angle) * (departmentRadius + teamRadius);
+            const y = centerY + Math.sin(angle) * (departmentRadius + teamRadius);
             node.x += (x - node.x) * alpha;
             node.y += (y - node.y) * alpha;
           }
@@ -49,8 +54,8 @@ function chart(data) {
           const parentNode = nodes.find(n => n.id === parent);
           if (parentNode) {
             const angle = (2 * Math.PI * Math.random()); // Random angle for individual distribution
-            const x = parentNode.x + Math.cos(angle) * 50;
-            const y = parentNode.y + Math.sin(angle) * 50;
+            const x = parentNode.x + Math.cos(angle) * 40;
+            const y = parentNode.y + Math.sin(angle) * 40;
             node.x += (x - node.x) * alpha;
             node.y += (y - node.y) * alpha;
           }
@@ -61,12 +66,12 @@ function chart(data) {
 
   const simulation = d3.forceSimulation(nodes)
       .force("link", d3.forceLink(links).id(d => d.id).distance(d => {
-        if (d.relationship === "Department Connection") return 100;
-        if (d.source.level === "1" && d.target.level === "2") return 50;
-        return 50;
+        if (d.relationship === "Department Connection") return 300;
+        if (d.source.level === "1" && d.target.level === "2") return 100; // Reduced from 150
+        return 40;
       }))
       .force("charge", d3.forceManyBody().strength(d => {
-        if (d.level === "1") return -750;
+        if (d.level === "1") return -1000;
         if (d.level === "2") return -500;
         return -100;
       }))
