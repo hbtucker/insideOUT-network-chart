@@ -7,7 +7,7 @@ function chart(data) {
   const links = data.links.map(d => Object.create(d));
   const nodes = data.nodes.map(d => Object.create(d));
 
-  // Add connections between top-level departments
+// Add connections between top-level departments
   const departments = nodes.filter(d => d.level === "1");
   for (let i = 0; i < departments.length; i++) {
     for (let j = i + 1; j < departments.length; j++) {
@@ -19,27 +19,13 @@ function chart(data) {
     }
   }
 
-  // Custom force to separate nodes by level
+// Custom force to separate nodes by level
   function forceByLevel(alpha) {
     const centerX = width / 2;
     const centerY = height / 2;
-    const departmentRadius = 200;
-    const teamRadius = 50;
+    const departmentRadius = 100;
+    const teamRadius = 40; // Reduced from 300 to bring teams closer
     const maxAngle = Math.PI / 3.6; // About 50 degrees in radians
-
-    // Group teams by department
-    const teamsByDepartment = {};
-    nodes.forEach(node => {
-      if (node.level === "2") {
-        const parent = links.find(link => link.target === node.id)?.source;
-        if (parent) {
-          if (!teamsByDepartment[parent]) {
-            teamsByDepartment[parent] = [];
-          }
-          teamsByDepartment[parent].push(node);
-        }
-      }
-    });
 
     for (let node of nodes) {
       if (node.level === "1") {
@@ -53,15 +39,11 @@ function chart(data) {
           if (parentNode) {
             const departmentIndex = departments.findIndex(d => d.id === parent);
             const departmentAngle = (2 * Math.PI * departmentIndex) / departments.length;
-            const teamCount = teamsByDepartment[parent].length;
-            const teamIndex = teamsByDepartment[parent].indexOf(node);
-            
-            // Calculate team angle within the max angle range, relative to the department angle
-            const teamAngleOffset = maxAngle * ((teamIndex - (teamCount - 1) / 2) / (teamCount - 1));
-            const teamAngle = departmentAngle + teamAngleOffset;
-            
-            const x = centerX + Math.cos(teamAngle) * (departmentRadius + teamRadius);
-            const y = centerY + Math.sin(teamAngle) * (departmentRadius + teamRadius);
+            const teamCount = links.filter(l => l.source === parent && l.target !== parent).length;
+            const teamIndex = links.filter(l => l.source === parent && l.target !== parent).findIndex(l => l.target === node.id);
+            const angle = departmentAngle + (maxAngle * (teamIndex - (teamCount - 1) / 2) / (teamCount - 1));
+            const x = centerX + Math.cos(angle) * (departmentRadius + teamRadius);
+            const y = centerY + Math.sin(angle) * (departmentRadius + teamRadius);
             node.x += (x - node.x) * alpha;
             node.y += (y - node.y) * alpha;
           }
@@ -71,10 +53,9 @@ function chart(data) {
         if (parent) {
           const parentNode = nodes.find(n => n.id === parent);
           if (parentNode) {
-            const angle = Math.atan2(parentNode.y - centerY, parentNode.x - centerX);
-            const individualRadius = 40;
-            const x = parentNode.x + Math.cos(angle) * individualRadius;
-            const y = parentNode.y + Math.sin(angle) * individualRadius;
+            const angle = (2 * Math.PI * Math.random()); // Random angle for individual distribution
+            const x = parentNode.x + Math.cos(angle) * 40;
+            const y = parentNode.y + Math.sin(angle) * 40;
             node.x += (x - node.x) * alpha;
             node.y += (y - node.y) * alpha;
           }
@@ -85,13 +66,13 @@ function chart(data) {
 
   const simulation = d3.forceSimulation(nodes)
       .force("link", d3.forceLink(links).id(d => d.id).distance(d => {
-        if (d.relationship === "Department Connection") return 300;
-        if (d.source.level === "1" && d.target.level === "2") return 100;
-        return 40;
+        if (d.relationship === "Department Connection") return 100;
+        if (d.source.level === "1" && d.target.level === "2") return 25; // Reduced from 150
+        return 30;
       }))
       .force("charge", d3.forceManyBody().strength(d => {
-        if (d.level === "1") return -400;
-        if (d.level === "2") return -200;
+        if (d.level === "1") return -200;
+        if (d.level === "2") return -60;
         return -100;
       }))
       .force("center", d3.forceCenter(width / 2, height / 2))
@@ -109,7 +90,7 @@ function chart(data) {
   svg.append("rect")
       .attr("width", width)
       .attr("height", height)
-      .attr("fill", "#f6f6f6");
+      .attr("fill", "#fff");
 
   const link = svg.append("g")
       .attr("stroke", "#999")
@@ -208,3 +189,4 @@ d3.json("data_org-chart-network.json").then(data => {
   const chartElement = chart(data);
   document.getElementById("chart").appendChild(chartElement);
 }).catch(error => console.error("Error loading the data: ", error));
+
