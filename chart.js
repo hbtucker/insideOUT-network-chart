@@ -37,9 +37,9 @@ function chart(data) {
   function forceByLevel(alpha) {
     const centerX = width / 2;
     const centerY = height / 2;
-    const departmentRadius = 100;
-    const teamRadius = 40;
-    const maxAngle = Math.PI / 6; // About 30 degrees in radians
+    const departmentRadius = 250;
+    const teamRadius = 150;
+    const maxAngle = Math.PI / 3; // About 60 degrees in radians
 
     // Group teams by department
     const teamsByDepartment = {};
@@ -71,7 +71,7 @@ function chart(data) {
             const teamIndex = teamsByDepartment[parent].indexOf(node);
             
             // Calculate team angle within the max angle range, relative to the department angle
-            const teamAngleOffset = maxAngle * ((teamIndex - (teamCount - 1) / 5) / (teamCount - 1));
+            const teamAngleOffset = maxAngle * ((teamIndex - (teamCount - 1) / 2) / (teamCount - 1));
             const teamAngle = departmentAngle + teamAngleOffset;
             
             // Calculate position relative to the center of the chart
@@ -88,7 +88,7 @@ function chart(data) {
           const parentNode = nodes.find(n => n.id === parent);
           if (parentNode) {
             const angle = Math.atan2(parentNode.y - centerY, parentNode.x - centerX);
-            const individualRadius = 40;
+            const individualRadius = 30;
             const x = parentNode.x + Math.cos(angle) * individualRadius;
             const y = parentNode.y + Math.sin(angle) * individualRadius;
             node.x += (x - node.x) * alpha;
@@ -101,14 +101,14 @@ function chart(data) {
 
   const simulation = d3.forceSimulation(nodes)
       .force("link", d3.forceLink(links).id(d => d.id).distance(d => {
-        if (d.relationship === "Department Connection") return 200;
-        if (d.relationship === "Team Connection") return 80;
-        if (d.source.level === "1" && d.target.level === "2") return 20;
+        if (d.relationship === "Department Connection") return 300;
+        if (d.relationship === "Team Connection") return 100;
+        if (d.source.level === "1" && d.target.level === "2") return 150;
         return 30;
       }))
       .force("charge", d3.forceManyBody().strength(d => {
-        if (d.level === "1") return -200;
-        if (d.level === "2") return -75;
+        if (d.level === "1") return -500;
+        if (d.level === "2") return -200;
         return -50;
       }))
       .force("center", d3.forceCenter(width / 2, height / 2))
