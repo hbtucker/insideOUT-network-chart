@@ -23,20 +23,36 @@ function chart(data) {
   function forceByLevel(alpha) {
     const centerX = width / 2;
     const centerY = height / 2;
-    const levelSpacing = 80;
+    const departmentRadius = 150;
+    const teamRadius = 300;
 
     for (let node of nodes) {
       if (node.level === "1") {
         const angle = (2 * Math.PI * departments.indexOf(node)) / departments.length;
-        node.x += (centerX + Math.cos(angle) * levelSpacing - node.x) * alpha;
-        node.y += (centerY + Math.sin(angle) * levelSpacing - node.y) * alpha;
+        node.x += (centerX + Math.cos(angle) * departmentRadius - node.x) * alpha;
+        node.y += (centerY + Math.sin(angle) * departmentRadius - node.y) * alpha;
       } else if (node.level === "2") {
         const parent = links.find(link => link.target === node.id)?.source;
         if (parent) {
           const parentNode = nodes.find(n => n.id === parent);
           if (parentNode) {
-            node.x += (parentNode.x - node.x) * alpha * 0.6;
-            node.y += (parentNode.y - node.y) * alpha * 0.6;
+            const angle = (2 * Math.PI * Math.random()); // Random angle for team distribution
+            const x = parentNode.x + Math.cos(angle) * teamRadius * 0.5;
+            const y = parentNode.y + Math.sin(angle) * teamRadius * 0.5;
+            node.x += (x - node.x) * alpha;
+            node.y += (y - node.y) * alpha;
+          }
+        }
+      } else if (node.level === "3") {
+        const parent = links.find(link => link.target === node.id)?.source;
+        if (parent) {
+          const parentNode = nodes.find(n => n.id === parent);
+          if (parentNode) {
+            const angle = (2 * Math.PI * Math.random()); // Random angle for individual distribution
+            const x = parentNode.x + Math.cos(angle) * 50;
+            const y = parentNode.y + Math.sin(angle) * 50;
+            node.x += (x - node.x) * alpha;
+            node.y += (y - node.y) * alpha;
           }
         }
       }
@@ -45,19 +61,19 @@ function chart(data) {
 
   const simulation = d3.forceSimulation(nodes)
       .force("link", d3.forceLink(links).id(d => d.id).distance(d => {
-        if (d.relationship === "Department Connection") return 80;
-        if (d.source.level === "1" && d.target.level === "2") return 40;
-        return 40;
+        if (d.relationship === "Department Connection") return 300;
+        if (d.source.level === "1" && d.target.level === "2") return 150;
+        return 50;
       }))
       .force("charge", d3.forceManyBody().strength(d => {
-        if (d.level === "1") return -400;
-        if (d.level === "2") return -200;
-        return -200;
+        if (d.level === "1") return -1000;
+        if (d.level === "2") return -500;
+        return -100;
       }))
       .force("center", d3.forceCenter(width / 2, height / 2))
       .force("collide", d3.forceCollide().radius(d => {
         if (d.level === "1") return 60;
-        if (d.level === "2") return 80;
+        if (d.level === "2") return 40;
         return 20;
       }))
       .force("byLevel", forceByLevel);
