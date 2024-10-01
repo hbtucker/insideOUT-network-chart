@@ -15,9 +15,9 @@ function createChart(data) {
 
   const simulation = d3.forceSimulation()
     .force("link", d3.forceLink().id(d => d.id).distance(d => d.source.level === "1" && d.target.level === "1" ? 300 : 100))
-    .force("charge", d3.forceManyBody().strength(d => d.level === "1" ? -200 : d.level === "2" ? -100 : -50))
+    .force("charge", d3.forceManyBody().strength(d => d.level === "1" ? -200 : d.level === "2" ? -200 : -100))
     .force("center", d3.forceCenter(width / 2, height / 2))
-    .force("collide", d3.forceCollide().radius(d => d.level === "1" ? 50 : d.level === "2" ? 40 : 20));
+    .force("collide", d3.forceCollide().radius(d => d.level === "1" ? 40 : d.level === "2" ? 30 : 15));
 
   const link = svg.append("g")
     .selectAll("line")
