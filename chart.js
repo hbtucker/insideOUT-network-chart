@@ -7,7 +7,7 @@ function chart(data) {
   const links = data.links.map(d => Object.create(d));
   const nodes = data.nodes.map(d => Object.create(d));
 
-// Add connections between top-level departments
+  // Add connections between top-level departments
   const departments = nodes.filter(d => d.level === "1");
   for (let i = 0; i < departments.length; i++) {
     for (let j = i + 1; j < departments.length; j++) {
@@ -25,7 +25,7 @@ function chart(data) {
     const centerY = height / 2;
     const departmentRadius = 100;
     const teamRadius = 40;
-    const maxAngle = Math.PI / 3.6; // About 50 degrees in radians
+    const maxAngle = Math.PI / 6; // About 30 degrees in radians
 
     // Group teams by department
     const teamsByDepartment = {};
@@ -60,8 +60,10 @@ function chart(data) {
             const teamAngleOffset = maxAngle * ((teamIndex - (teamCount - 1) / 2) / (teamCount - 1));
             const teamAngle = departmentAngle + teamAngleOffset;
             
+            // Calculate position relative to the center of the chart
             const x = centerX + Math.cos(teamAngle) * (departmentRadius + teamRadius);
             const y = centerY + Math.sin(teamAngle) * (departmentRadius + teamRadius);
+            
             node.x += (x - node.x) * alpha;
             node.y += (y - node.y) * alpha;
           }
@@ -86,13 +88,13 @@ function chart(data) {
   const simulation = d3.forceSimulation(nodes)
       .force("link", d3.forceLink(links).id(d => d.id).distance(d => {
         if (d.relationship === "Department Connection") return 100;
-        if (d.source.level === "1" && d.target.level === "2") return 20; // Reduced from 150
+        if (d.source.level === "1" && d.target.level === "2") return 20;
         return 30;
       }))
       .force("charge", d3.forceManyBody().strength(d => {
         if (d.level === "1") return -200;
         if (d.level === "2") return -50;
-        return -100;
+        return -50;
       }))
       .force("center", d3.forceCenter(width / 2, height / 2))
       .force("collide", d3.forceCollide().radius(d => {
@@ -109,7 +111,7 @@ function chart(data) {
   svg.append("rect")
       .attr("width", width)
       .attr("height", height)
-      .attr("fill", "#fff");
+      .attr("fill", "#f6f6f6");
 
   const link = svg.append("g")
       .attr("stroke", "#999")
@@ -208,4 +210,3 @@ d3.json("data_org-chart-network.json").then(data => {
   const chartElement = chart(data);
   document.getElementById("chart").appendChild(chartElement);
 }).catch(error => console.error("Error loading the data: ", error));
-
