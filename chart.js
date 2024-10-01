@@ -22,7 +22,7 @@ function chart(data) {
   function forceByLevel(alpha) {
     const centerX = width / 2;
     const centerY = height / 2;
-    const departmentRadius = 180;
+    const departmentRadius = 150;
     const teamRadius = 300;
     const maxAngle = Math.PI / 3; // About 60 degrees in radians
 
@@ -89,15 +89,15 @@ function chart(data) {
         return 40;
       }))
       .force("charge", d3.forceManyBody().strength(d => {
-        if (d.level === "1") return -400;
-        if (d.level === "2") return -200;
-        return -80;
+        if (d.level === "1") return -200;
+        if (d.level === "2") return -100;
+        return -50;
       }))
       .force("center", d3.forceCenter(width / 2, height / 2))
       .force("collide", d3.forceCollide().radius(d => {
-        if (d.level === "1") return 50;
-        if (d.level === "2") return 35;
-        return 20;
+        if (d.level === "1") return 40;
+        if (d.level === "2") return 20;
+        return 10;
       }))
       .force("byLevel", forceByLevel);
 
