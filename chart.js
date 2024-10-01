@@ -1,7 +1,7 @@
 // chart.js
 const width = 1200;
 const height = 800;
-const colors = ["#ffc433", "#2a9d8f", "#e9c46a", "#f4a261", "#e76f51"];
+const colors = ["#264653", "#2a9d8f", "#e9c46a", "#f4a261", "#e76f51"];
 
 function chart(data) {
   const links = data.links.map(d => Object.create(d));
