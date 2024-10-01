@@ -7,12 +7,24 @@ function chart(data) {
   const links = data.links.map(d => Object.create(d));
   const nodes = data.nodes.map(d => Object.create(d));
 
+  // Add connections between top-level departments
+  const departments = nodes.filter(d => d.level === "1");
+  for (let i = 0; i < departments.length; i++) {
+    for (let j = i + 1; j < departments.length; j++) {
+      links.push({
+        source: departments[i].id,
+        target: departments[j].id,
+        relationship: "Department Connection"
+      });
+    }
+  }
+
   const simulation = d3.forceSimulation(nodes)
-      .force("link", d3.forceLink(links).id(d => d.id).distance(50))
+      .force("link", d3.forceLink(links).id(d => d.id).distance(d => d.relationship === "Department Connection" ? 200 : 50))
       .force("charge", d3.forceManyBody().strength(d => -150 * (d.level === "1" ? 3 : d.level === "2" ? 2 : 1)))
       .force("center", d3.forceCenter(width / 2, height / 2))
-      .force("x", d3.forceX(width / 2).strength(0.06))
-      .force("y", d3.forceY(height / 2).strength(0.06));
+      .force("x", d3.forceX(width / 2).strength(0.07))
+      .force("y", d3.forceY(height / 2).strength(0.07));
 
   const svg = d3.create("svg")
       .attr("viewBox", [0, 0, width, height]);
@@ -23,7 +35,8 @@ function chart(data) {
     .selectAll("line")
     .data(links)
     .join("line")
-      .attr("stroke-width", d => d.relationship ? 2 : 1);
+      .attr("stroke-width", d => d.relationship === "Department Connection" ? 3 : (d.relationship ? 2 : 1))
+      .attr("stroke-dasharray", d => d.relationship === "Department Connection" ? "5,5" : "none");
 
   const node = svg.append("g")
       .attr("stroke", "#fff")
@@ -42,9 +55,8 @@ function chart(data) {
       .attr("text-anchor", "middle")
       .attr("dominant-baseline", "central")
       .text(d => d.id)
-      .style("font-family", "'Poppins', sans-serif")
-      .attr("font-size", d => d.level === "1" ? "9px" : d.level === "2" ? "7px" : "5px")
-      .attr("fill", "black")
+      .attr("font-size", d => d.level === "1" ? "12px" : d.level === "2" ? "10px" : "8px")
+      .attr("fill", "white")
       .style("pointer-events", "none");
 
   const tooltip = d3.select("body").append("div")
