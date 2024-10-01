@@ -1,7 +1,7 @@
 // main.js
 const forceVariables = {
-  nodeRadius: 20,
-  nodeDistance: 80,
+  nodeRadius: 30,
+  nodeDistance: 70,
   chargeStr: -700,
   xDenom: 2,
   xStr: 0.1,
