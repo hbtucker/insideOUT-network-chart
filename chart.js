@@ -22,8 +22,8 @@ function chart(data) {
   function forceByLevel(alpha) {
     const centerX = width / 2;
     const centerY = height / 2;
-    const departmentRadius = 150;
-    const teamRadius = 300;
+    const departmentRadius = 200;
+    const teamRadius = 400;
     const maxAngle = Math.PI / 3; // About 60 degrees in radians
 
     // Group teams by department
@@ -71,7 +71,7 @@ function chart(data) {
           const parentNode = nodes.find(n => n.id === parent);
           if (parentNode) {
             const angle = Math.atan2(parentNode.y - centerY, parentNode.x - centerX);
-            const individualRadius = 40;
+            const individualRadius = 50;
             const x = parentNode.x + Math.cos(angle) * individualRadius;
             const y = parentNode.y + Math.sin(angle) * individualRadius;
             node.x += (x - node.x) * alpha;
@@ -84,20 +84,20 @@ function chart(data) {
 
   const simulation = d3.forceSimulation(nodes)
       .force("link", d3.forceLink(links).id(d => d.id).distance(d => {
-        if (d.relationship === "Department Connection") return 150;
-        if (d.source.level === "1" && d.target.level === "2") return 75;
-        return 40;
+        if (d.relationship === "Department Connection") return 300;
+        if (d.source.level === "1" && d.target.level === "2") return 200;
+        return 50;
       }))
       .force("charge", d3.forceManyBody().strength(d => {
-        if (d.level === "1") return -200;
-        if (d.level === "2") return -100;
-        return -50;
+        if (d.level === "1") return -1000;
+        if (d.level === "2") return -500;
+        return -100;
       }))
       .force("center", d3.forceCenter(width / 2, height / 2))
       .force("collide", d3.forceCollide().radius(d => {
-        if (d.level === "1") return 40;
-        if (d.level === "2") return 20;
-        return 10;
+        if (d.level === "1") return 60;
+        if (d.level === "2") return 40;
+        return 20;
       }))
       .force("byLevel", forceByLevel);
 
@@ -125,7 +125,7 @@ function chart(data) {
     .selectAll("circle")
     .data(nodes)
     .join("circle")
-      .attr("r", d => d.level === "1" ? 50 : d.level === "2" ? 35 : 20)
+      .attr("r", d => d.level === "1" ? 40 : d.level === "2" ? 30 : 15)
       .attr("fill", d => colors[d.level - 1]);
 
   const label = svg.append("g")
