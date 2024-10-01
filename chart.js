@@ -24,8 +24,8 @@ function chart(data) {
     const centerX = width / 2;
     const centerY = height / 2;
     const departmentRadius = 100;
-    const teamRadius = 40; // Reduced from 300 to bring teams closer
-    const maxAngle = Math.PI / 3.6; // About 50 degrees in radians
+    const teamRadius = 30; // Reduced from 300 to bring teams closer
+    const maxAngle = Math.PI / 3; // About 40 degrees in radians
 
     for (let node of nodes) {
       if (node.level === "1") {
@@ -67,12 +67,12 @@ function chart(data) {
   const simulation = d3.forceSimulation(nodes)
       .force("link", d3.forceLink(links).id(d => d.id).distance(d => {
         if (d.relationship === "Department Connection") return 100;
-        if (d.source.level === "1" && d.target.level === "2") return 25; // Reduced from 150
+        if (d.source.level === "1" && d.target.level === "2") return 20; // Reduced from 150
         return 30;
       }))
       .force("charge", d3.forceManyBody().strength(d => {
         if (d.level === "1") return -200;
-        if (d.level === "2") return -60;
+        if (d.level === "2") return -50;
         return -100;
       }))
       .force("center", d3.forceCenter(width / 2, height / 2))
