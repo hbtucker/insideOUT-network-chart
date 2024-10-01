@@ -19,15 +19,39 @@ function chart(data) {
     }
   }
 
+  // Custom force to separate nodes by level
+  function forceByLevel(alpha) {
+    const centerX = width / 2;
+    const centerY = height / 2;
+    const levelSpacing = 150;
+
+    for (let node of nodes) {
+      if (node.level === "1") {
+        const angle = (2 * Math.PI * departments.indexOf(node)) / departments.length;
+        node.x += (centerX + Math.cos(angle) * levelSpacing - node.x) * alpha;
+        node.y += (centerY + Math.sin(angle) * levelSpacing - node.y) * alpha;
+      } else if (node.level === "2") {
+        const parent = links.find(link => link.target === node.id)?.source;
+        if (parent) {
+          const parentNode = nodes.find(n => n.id === parent);
+          if (parentNode) {
+            node.x += (parentNode.x - node.x) * alpha * 0.5;
+            node.y += (parentNode.y - node.y) * alpha * 0.5;
+          }
+        }
+      }
+    }
+  }
+
   const simulation = d3.forceSimulation(nodes)
       .force("link", d3.forceLink(links).id(d => d.id).distance(d => {
-        if (d.relationship === "Department Connection") return 120;
-        if (d.source.level === "1" && d.target.level === "2") return 80;
-        return 60;
+        if (d.relationship === "Department Connection") return 250;
+        if (d.source.level === "1" && d.target.level === "2") return 100;
+        return 50;
       }))
       .force("charge", d3.forceManyBody().strength(d => {
-        if (d.level === "1") return -300;
-        if (d.level === "2") return -200;
+        if (d.level === "1") return -500;
+        if (d.level === "2") return -300;
         return -100;
       }))
       .force("center", d3.forceCenter(width / 2, height / 2))
@@ -35,7 +59,8 @@ function chart(data) {
         if (d.level === "1") return 60;
         if (d.level === "2") return 40;
         return 20;
-      }));
+      }))
+      .force("byLevel", forceByLevel);
 
   const svg = d3.create("svg")
       .attr("viewBox", [0, 0, width, height]);
