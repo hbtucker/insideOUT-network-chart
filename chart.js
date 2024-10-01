@@ -23,20 +23,12 @@ function createChart(data) {
   const departmentRadius = radius * 0.4;
   const teamRadius = radius * 0.7;
 
-  const departmentLayout = d3.radial()
-    .radius(departmentRadius)
-    .angle(d => d.x);
-
-  const teamLayout = d3.radial()
-    .radius(teamRadius)
-    .angle(d => d.x);
-
   // Position departments
   const departmentAngle = 2 * Math.PI / departmentNodes.length;
   departmentNodes.forEach((d, i) => {
-    const [x, y] = departmentLayout([{ x: i * departmentAngle }]);
-    d.x = x + width / 2;
-    d.y = y + height / 2;
+    const angle = i * departmentAngle;
+    d.x = width / 2 + Math.cos(angle) * departmentRadius;
+    d.y = height / 2 + Math.sin(angle) * departmentRadius;
   });
 
   // Position teams
@@ -48,9 +40,8 @@ function createChart(data) {
       const startAngle = Math.atan2(parent.y - height / 2, parent.x - width / 2) - departmentAngle / 2;
       const index = siblings.indexOf(team);
       const angle = startAngle + (index + 1) * siblingAngle;
-      const [x, y] = teamLayout([{ x: angle }]);
-      team.x = x + width / 2;
-      team.y = y + height / 2;
+      team.x = width / 2 + Math.cos(angle) * teamRadius;
+      team.y = height / 2 + Math.sin(angle) * teamRadius;
     }
   });
 
