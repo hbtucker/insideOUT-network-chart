@@ -23,8 +23,8 @@ function chart(data) {
   function forceByLevel(alpha) {
     const centerX = width / 2;
     const centerY = height / 2;
-    const departmentRadius = 80;
-    const teamRadius = 160;
+    const departmentRadius = 75;
+    const teamRadius = 150;
 
     for (let node of nodes) {
       if (node.level === "1") {
@@ -66,7 +66,7 @@ function chart(data) {
         return 50;
       }))
       .force("charge", d3.forceManyBody().strength(d => {
-        if (d.level === "1") return -1000;
+        if (d.level === "1") return -750;
         if (d.level === "2") return -500;
         return -100;
       }))
