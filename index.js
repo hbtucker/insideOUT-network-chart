@@ -1,1 +1,1 @@
-export {default} from "./chart.js";
+export {default} from "./main.js";
