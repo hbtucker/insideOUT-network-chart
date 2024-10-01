@@ -43,7 +43,7 @@ function chart(data) {
       .attr("dominant-baseline", "central")
       .text(d => d.id)
       .attr("font-size", d => d.level === "1" ? "9px" : d.level === "2" ? "7px" : "5px")
-      .attr("fill", "#black")
+      .attr("fill", "black")
       .style("pointer-events", "none");
 
   const tooltip = d3.select("body").append("div")
