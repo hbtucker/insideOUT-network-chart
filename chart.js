@@ -22,8 +22,8 @@ function chart(data) {
   const simulation = d3.forceSimulation(nodes)
       .force("link", d3.forceLink(links).id(d => d.id).distance(d => {
         if (d.relationship === "Department Connection") return 120;
-        if (d.source.level === "1" && d.target.level === "2") return 60;
-        return 30;
+        if (d.source.level === "1" && d.target.level === "2") return 80;
+        return 60;
       }))
       .force("charge", d3.forceManyBody().strength(d => {
         if (d.level === "1") return -300;
@@ -32,9 +32,9 @@ function chart(data) {
       }))
       .force("center", d3.forceCenter(width / 2, height / 2))
       .force("collide", d3.forceCollide().radius(d => {
-        if (d.level === "1") return 80;
-        if (d.level === "2") return 60;
-        return 40;
+        if (d.level === "1") return 60;
+        if (d.level === "2") return 40;
+        return 20;
       }));
 
   const svg = d3.create("svg")
