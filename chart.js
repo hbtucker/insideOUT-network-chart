@@ -23,7 +23,7 @@ function chart(data) {
   function forceByLevel(alpha) {
     const centerX = width / 2;
     const centerY = height / 2;
-    const levelSpacing = 100;
+    const levelSpacing = 80;
 
     for (let node of nodes) {
       if (node.level === "1") {
@@ -46,18 +46,18 @@ function chart(data) {
   const simulation = d3.forceSimulation(nodes)
       .force("link", d3.forceLink(links).id(d => d.id).distance(d => {
         if (d.relationship === "Department Connection") return 80;
-        if (d.source.level === "1" && d.target.level === "2") return 50;
-        return 50;
+        if (d.source.level === "1" && d.target.level === "2") return 40;
+        return 40;
       }))
       .force("charge", d3.forceManyBody().strength(d => {
-        if (d.level === "1") return -500;
-        if (d.level === "2") return -300;
+        if (d.level === "1") return -400;
+        if (d.level === "2") return -200;
         return -200;
       }))
       .force("center", d3.forceCenter(width / 2, height / 2))
       .force("collide", d3.forceCollide().radius(d => {
         if (d.level === "1") return 60;
-        if (d.level === "2") return 40;
+        if (d.level === "2") return 80;
         return 20;
       }))
       .force("byLevel", forceByLevel);
