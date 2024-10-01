@@ -15,9 +15,9 @@ function createChart(data) {
 
   const simulation = d3.forceSimulation()
     .force("link", d3.forceLink().id(d => d.id).distance(d => d.source.level === "1" && d.target.level === "1" ? 300 : 100))
-    .force("charge", d3.forceManyBody().strength(d => d.level === "1" ? -1000 : d.level === "2" ? -500 : -100))
+    .force("charge", d3.forceManyBody().strength(d => d.level === "1" ? -1000 : d.level === "2" ? -200 : -50))
     .force("center", d3.forceCenter(width / 2, height / 2))
-    .force("collide", d3.forceCollide().radius(d => d.level === "1" ? 100 : d.level === "2" ? 60 : 30));
+    .force("collide", d3.forceCollide().radius(d => d.level === "1" ? 50 : d.level === "2" ? 40 : 30));
 
   const link = svg.append("g")
     .selectAll("line")
@@ -34,7 +34,7 @@ function createChart(data) {
     .enter().append("g");
 
   node.append("circle")
-    .attr("r", d => d.level === "1" ? 40 : d.level === "2" ? 30 : 20)
+    .attr("r", d => d.level === "1" ? 60 : d.level === "2" ? 40 : 30)
     .attr("fill", d => colors[d.level === "1" ? "department" : d.level === "2" ? "team" : "individual"]);
 
   node.append("text")
