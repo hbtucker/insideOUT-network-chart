@@ -7,7 +7,7 @@ function chart(data) {
   const links = data.links.map(d => Object.create(d));
   const nodes = data.nodes.map(d => Object.create(d));
 
-  // Add connections between top-level departments
+// Add connections between top-level departments
   const departments = nodes.filter(d => d.level === "1");
   for (let i = 0; i < departments.length; i++) {
     for (let j = i + 1; j < departments.length; j++) {
@@ -19,7 +19,7 @@ function chart(data) {
     }
   }
 
-  // Custom force to separate nodes by level
+// Custom force to separate nodes by level
   function forceByLevel(alpha) {
     const centerX = width / 2;
     const centerY = height / 2;
