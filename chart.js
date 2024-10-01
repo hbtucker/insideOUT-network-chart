@@ -21,20 +21,20 @@ function chart(data) {
 
   const simulation = d3.forceSimulation(nodes)
       .force("link", d3.forceLink(links).id(d => d.id).distance(d => {
-        if (d.relationship === "Department Connection") return 100;
+        if (d.relationship === "Department Connection") return 80;
         if (d.source.level === "1" && d.target.level === "2") return 50;
         return 20;
       }))
       .force("charge", d3.forceManyBody().strength(d => {
         if (d.level === "1") return -200;
-        if (d.level === "2") return -50;
-        return -100;
+        if (d.level === "2") return -100;
+        return -50;
       }))
       .force("center", d3.forceCenter(width / 2, height / 2))
       .force("collide", d3.forceCollide().radius(d => {
-        if (d.level === "1") return 60;
-        if (d.level === "2") return 40;
-        return 20;
+        if (d.level === "1") return 80;
+        if (d.level === "2") return 60;
+        return 40;
       }));
 
   const svg = d3.create("svg")
