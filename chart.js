@@ -20,17 +20,31 @@ function chart(data) {
   }
 
   const simulation = d3.forceSimulation(nodes)
-      .force("link", d3.forceLink(links).id(d => d.id).distance(d => d.relationship === "Department Connection" ? 200 : 50))
-      .force("charge", d3.forceManyBody().strength(d => -150 * (d.level === "1" ? 3 : d.level === "2" ? 2 : 1)))
+      .force("link", d3.forceLink(links).id(d => d.id).distance(d => {
+        if (d.relationship === "Department Connection") return 150;
+        if (d.source.level === "1" && d.target.level === "2") return 80;
+        return 30;
+      }))
+      .force("charge", d3.forceManyBody().strength(d => {
+        if (d.level === "1") return -500;
+        if (d.level === "2") return -300;
+        return -100;
+      }))
       .force("center", d3.forceCenter(width / 2, height / 2))
-      .force("x", d3.forceX(width / 2).strength(0.05))
-      .force("y", d3.forceY(height / 2).strength(0.05));
+      .force("collide", d3.forceCollide().radius(d => {
+        if (d.level === "1") return 60;
+        if (d.level === "2") return 40;
+        return 20;
+      }));
 
   const svg = d3.create("svg")
-      .attr("viewBox", [0, 0, width, height])
-      .attr(
-      "style",
-      `max-width: 100%; height: auto; display: block; margin: 0 -14px; background: #f6f6f6; cursor: pointer; font-family: 'Poppins', sans-serif;`
+      .attr("viewBox", [0, 0, width, height]);
+
+  // Add background
+  svg.append("rect")
+      .attr("width", width)
+      .attr("height", height)
+      .attr("fill", "#f6f6f6");
 
   const link = svg.append("g")
       .attr("stroke", "#999")
