@@ -71,8 +71,8 @@ function chart(data) {
         return 30;
       }))
       .force("charge", d3.forceManyBody().strength(d => {
-        if (d.level === "1") return -400;
-        if (d.level === "2") return -200;
+        if (d.level === "1") return -300;
+        if (d.level === "2") return -100;
         return -100;
       }))
       .force("center", d3.forceCenter(width / 2, height / 2))
