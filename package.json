@@ -1,0 +1,14 @@
+{
+  "name": "@inside-out/network",
+  "main": "5944afea6b046c9b@261.js",
+  "version": "261.0.0",
+  "homepage": "https://observablehq.com/@inside-out/network",
+  "author": {
+    "name": "insideOUT",
+    "url": "https://observablehq.com/@inside-out"
+  },
+  "type": "module",
+  "peerDependencies": {
+    "@observablehq/runtime": "4 - 5"
+  }
+}
