@@ -86,12 +86,12 @@ function chart(data) {
   const simulation = d3.forceSimulation(nodes)
       .force("link", d3.forceLink(links).id(d => d.id).distance(d => {
         if (d.relationship === "Department Connection") return 80;
-        if (d.source.level === "1" && d.target.level === "2") return 10; // Reduced from 150
+        if (d.source.level === "1" && d.target.level === "2") return 80; // Reduced from 150
         return 20;
       }))
       .force("charge", d3.forceManyBody().strength(d => {
         if (d.level === "1") return -50;
-        if (d.level === "2") return -20;
+        if (d.level === "2") return -30;
         return -20;
       }))
       .force("center", d3.forceCenter(width / 2, height / 2))
