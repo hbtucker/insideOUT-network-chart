@@ -35,8 +35,8 @@ function chart(data) {
         if (parent) {
           const parentNode = nodes.find(n => n.id === parent);
           if (parentNode) {
-            node.x += (parentNode.x - node.x) * alpha * 0.5;
-            node.y += (parentNode.y - node.y) * alpha * 0.5;
+            node.x += (parentNode.x - node.x) * alpha * 0.6;
+            node.y += (parentNode.y - node.y) * alpha * 0.6;
           }
         }
       }
@@ -45,8 +45,8 @@ function chart(data) {
 
   const simulation = d3.forceSimulation(nodes)
       .force("link", d3.forceLink(links).id(d => d.id).distance(d => {
-        if (d.relationship === "Department Connection") return 150;
-        if (d.source.level === "1" && d.target.level === "2") return 75;
+        if (d.relationship === "Department Connection") return 80;
+        if (d.source.level === "1" && d.target.level === "2") return 50;
         return 50;
       }))
       .force("charge", d3.forceManyBody().strength(d => {
