@@ -27,7 +27,10 @@ function chart(data) {
       .force("y", d3.forceY(height / 2).strength(0.05));
 
   const svg = d3.create("svg")
-      .attr("viewBox", [0, 0, width, height]);
+      .attr("viewBox", [0, 0, width, height])
+      .attr(
+      "style",
+      `max-width: 100%; height: auto; display: block; margin: 0 -14px; background: #f6f6f6; cursor: pointer; font-family: 'Poppins', sans-serif;`
 
   const link = svg.append("g")
       .attr("stroke", "#999")
