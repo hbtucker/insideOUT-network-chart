@@ -23,8 +23,8 @@ function chart(data) {
       .force("link", d3.forceLink(links).id(d => d.id).distance(d => d.relationship === "Department Connection" ? 200 : 50))
       .force("charge", d3.forceManyBody().strength(d => -150 * (d.level === "1" ? 3 : d.level === "2" ? 2 : 1)))
       .force("center", d3.forceCenter(width / 2, height / 2))
-      .force("x", d3.forceX(width / 2).strength(0.08))
-      .force("y", d3.forceY(height / 2).strength(0.08));
+      .force("x", d3.forceX(width / 2).strength(0.05)
+      .force("y", d3.forceY(height / 2).strength(0.05));
 
   const svg = d3.create("svg")
       .attr("viewBox", [0, 0, width, height]);
@@ -44,7 +44,7 @@ function chart(data) {
     .selectAll("circle")
     .data(nodes)
     .join("circle")
-      .attr("r", d => d.level === "1" ? 40 : d.level === "2" ? 30 : 20)
+      .attr("r", d => d.level === "1" ? 40 : d.level === "2" ? 30 : 15)
       .attr("fill", d => colors[d.level - 1]);
 
   const label = svg.append("g")
