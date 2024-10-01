@@ -41,8 +41,10 @@ function createChart(data) {
     .text(d => d.id)
     .attr("text-anchor", "middle")
     .attr("dy", ".3em")
-    .attr("font-size", d => d.level === "1" ? "12px" : d.level === "2" ? "10px" : "8px")
-    .attr("fill", "black");
+    .attr("font-size", d => d.level === "1" ? "10px" : d.level === "2" ? "8px" : "7px")
+    .attr("fill", "black")
+    .style("font-family", "Poppins, sans-serif")
+    .style("pointer-events", "none");
 
   simulation
     .nodes(data.nodes)
