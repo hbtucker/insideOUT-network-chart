@@ -1,7 +1,7 @@
 // main.js
 const forceVariables = {
   nodeRadius: 20,
-  nodeDistance: 80,
+  nodeDistance: 100,
   chargeStr: -800,
   xDenom: 2,
   xStr: 0.1,
@@ -11,9 +11,9 @@ const forceVariables = {
 
 function getRadius(group, level) {
   if (level === "2") {
-    return 40; // Twice the size for team nodes
+    return 50; // Twice the size for team nodes
   } else if (level === "1") {
-    return 60; // Even larger for top-level departments
+    return 65; // Even larger for top-level departments
   } else {
     return 25; // Original size for individual nodes
   }
