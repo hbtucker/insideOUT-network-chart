@@ -1,6 +1,6 @@
 {
   "name": "@inside-out/network",
-  "main": "chart.js",
+  "main": "main.js",
   "version": "261.0.0",
   "homepage": "https://observablehq.com/@inside-out/network",
   "author": {
