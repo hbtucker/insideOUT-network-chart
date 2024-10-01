@@ -23,8 +23,8 @@ function chart(data) {
   function forceByLevel(alpha) {
     const centerX = width / 2;
     const centerY = height / 2;
-    const departmentRadius = 800;
-    const teamRadius = 1600;
+    const departmentRadius = 80;
+    const teamRadius = 160;
 
     for (let node of nodes) {
       if (node.level === "1") {
@@ -62,7 +62,7 @@ function chart(data) {
   const simulation = d3.forceSimulation(nodes)
       .force("link", d3.forceLink(links).id(d => d.id).distance(d => {
         if (d.relationship === "Department Connection") return 150;
-        if (d.source.level === "1" && d.target.level === "2") return 750;
+        if (d.source.level === "1" && d.target.level === "2") return 75;
         return 50;
       }))
       .force("charge", d3.forceManyBody().strength(d => {
