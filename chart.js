@@ -23,8 +23,8 @@ function chart(data) {
       .force("link", d3.forceLink(links).id(d => d.id).distance(d => d.relationship === "Department Connection" ? 200 : 50))
       .force("charge", d3.forceManyBody().strength(d => -150 * (d.level === "1" ? 3 : d.level === "2" ? 2 : 1)))
       .force("center", d3.forceCenter(width / 2, height / 2))
-      .force("x", d3.forceX(width / 2).strength(0.04)
-      .force("y", d3.forceY(height / 2).strength(0.04));
+      .force("x", d3.forceX(width / 2).strength(0.1)
+      .force("y", d3.forceY(height / 2).strength(0.1));
 
   const svg = d3.create("svg")
       .attr("viewBox", [0, 0, width, height]);
