@@ -44,7 +44,7 @@ function chart(data) {
   svg.append("rect")
       .attr("width", width)
       .attr("height", height)
-      .attr("fill", "#f6f6f6");
+      .attr("fill", "#fff");
 
   const link = svg.append("g")
       .attr("stroke", "#999")
