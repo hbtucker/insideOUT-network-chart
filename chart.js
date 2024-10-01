@@ -37,9 +37,9 @@ function chart(data) {
   function forceByLevel(alpha) {
     const centerX = width / 2;
     const centerY = height / 2;
-    const departmentRadius = 250;
-    const teamRadius = 150;
-    const maxAngle = Math.PI / 3; // About 60 degrees in radians
+    const departmentRadius = 200;
+    const teamRadius = 350;
+    const maxAngle = Math.PI / 4; // About 45 degrees in radians
 
     // Group teams by department
     const teamsByDepartment = {};
@@ -74,9 +74,9 @@ function chart(data) {
             const teamAngleOffset = maxAngle * ((teamIndex - (teamCount - 1) / 2) / (teamCount - 1));
             const teamAngle = departmentAngle + teamAngleOffset;
             
-            // Calculate position relative to the center of the chart
-            const x = centerX + Math.cos(teamAngle) * (departmentRadius + teamRadius);
-            const y = centerY + Math.sin(teamAngle) * (departmentRadius + teamRadius);
+            // Calculate position relative to the center of the chart, ensuring teams are outside departments
+            const x = centerX + Math.cos(teamAngle) * teamRadius;
+            const y = centerY + Math.sin(teamAngle) * teamRadius;
             
             node.x += (x - node.x) * alpha;
             node.y += (y - node.y) * alpha;
@@ -107,9 +107,9 @@ function chart(data) {
         return 30;
       }))
       .force("charge", d3.forceManyBody().strength(d => {
-        if (d.level === "1") return -500;
-        if (d.level === "2") return -200;
-        return -50;
+        if (d.level === "1") return -1000;
+        if (d.level === "2") return -500;
+        return -100;
       }))
       .force("center", d3.forceCenter(width / 2, height / 2))
       .force("collide", d3.forceCollide().radius(d => {
