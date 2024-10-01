@@ -44,7 +44,7 @@ function chart(data) {
     .selectAll("circle")
     .data(nodes)
     .join("circle")
-      .attr("r", d => d.level === "1" ? 30 : d.level === "2" ? 20 : 10)
+      .attr("r", d => d.level === "1" ? 40 : d.level === "2" ? 30 : 20)
       .attr("fill", d => colors[d.level - 1]);
 
   const label = svg.append("g")
