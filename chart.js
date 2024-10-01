@@ -110,14 +110,14 @@ function chart(data) {
       .attr("height", height)
       .attr("fill", "#fff");
 
-  const link = svg.append("g")
-      .attr("stroke", "#999")
-      .attr("stroke-opacity", 0.6)
-    .selectAll("line")
-    .data(links)
-    .join("line")
-      .attr("stroke-width", d => d.relationship ? 1.5 : 1)
-      .attr("stroke-dasharray", d => d.relationship === "Department Connection" ? "5,5" : "none");
+const link = svg.append("g")
+    .attr("stroke", "#999")
+    .attr("stroke-opacity", 0.6)
+  .selectAll("line")
+  .data(links.filter(d => !(d.source.level === "1" && d.target.level === "2")))
+  .join("line")
+    .attr("stroke-width", d => d.relationship ? 1.5 : 1)
+    .attr("stroke-dasharray", d => d.relationship === "Department Connection" ? "5,5" : "none");
 
   const node = svg.append("g")
       .attr("stroke", "#fff")
