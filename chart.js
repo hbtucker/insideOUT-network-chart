@@ -23,7 +23,7 @@ function chart(data) {
   function forceByLevel(alpha) {
     const centerX = width / 2;
     const centerY = height / 2;
-    const levelSpacing = 150;
+    const levelSpacing = 100;
 
     for (let node of nodes) {
       if (node.level === "1") {
