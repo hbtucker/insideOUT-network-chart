@@ -24,7 +24,7 @@ function chart(data) {
     const centerX = width / 2;
     const centerY = height / 2;
     const departmentRadius = 200;
-    const teamRadius = 100;
+    const teamRadius = 50;
     const maxAngle = Math.PI / 3.6; // About 50 degrees in radians
 
     // Group teams by department
@@ -90,8 +90,8 @@ function chart(data) {
         return 40;
       }))
       .force("charge", d3.forceManyBody().strength(d => {
-        if (d.level === "1") return -5000;
-        if (d.level === "2") return -250;
+        if (d.level === "1") return -400;
+        if (d.level === "2") return -200;
         return -100;
       }))
       .force("center", d3.forceCenter(width / 2, height / 2))
