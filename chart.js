@@ -1,7 +1,7 @@
 // chart.js
 const width = 1200;
 const height = 800;
-const colors = ["#264653", "#2a9d8f", "#e9c46a", "#f4a261", "#e76f51"];
+const colors = ["#ffc433", "#f6f6f6", "#e9c46a", "#f4a261", "#e76f51"];
 
 function chart(data) {
   const links = data.links.map(d => Object.create(d));
@@ -42,8 +42,8 @@ function chart(data) {
       .attr("text-anchor", "middle")
       .attr("dominant-baseline", "central")
       .text(d => d.id)
-      .attr("font-size", d => d.level === "1" ? "12px" : d.level === "2" ? "10px" : "8px")
-      .attr("fill", "white")
+      .attr("font-size", d => d.level === "1" ? "9px" : d.level === "2" ? "7px" : "5px")
+      .attr("fill", "#black")
       .style("pointer-events", "none");
 
   const tooltip = d3.select("body").append("div")
