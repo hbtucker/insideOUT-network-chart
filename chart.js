@@ -23,8 +23,8 @@ function chart(data) {
       .force("link", d3.forceLink(links).id(d => d.id).distance(d => d.relationship === "Department Connection" ? 200 : 50))
       .force("charge", d3.forceManyBody().strength(d => -150 * (d.level === "1" ? 3 : d.level === "2" ? 2 : 1)))
       .force("center", d3.forceCenter(width / 2, height / 2))
-      .force("x", d3.forceX(width / 2).strength(0.07))
-      .force("y", d3.forceY(height / 2).strength(0.07));
+      .force("x", d3.forceX(width / 2).strength(0.08))
+      .force("y", d3.forceY(height / 2).strength(0.08));
 
   const svg = d3.create("svg")
       .attr("viewBox", [0, 0, width, height]);
@@ -35,7 +35,7 @@ function chart(data) {
     .selectAll("line")
     .data(links)
     .join("line")
-      .attr("stroke-width", d => d.relationship === "Department Connection" ? 3 : (d.relationship ? 2 : 1))
+      .attr("stroke-width", d => d.relationship ? 2 : 1)
       .attr("stroke-dasharray", d => d.relationship === "Department Connection" ? "5,5" : "none");
 
   const node = svg.append("g")
@@ -55,8 +55,9 @@ function chart(data) {
       .attr("text-anchor", "middle")
       .attr("dominant-baseline", "central")
       .text(d => d.id)
-      .attr("font-size", d => d.level === "1" ? "12px" : d.level === "2" ? "10px" : "8px")
-      .attr("fill", "white")
+      .attr("font-size", d => d.level === "1" ? "10px" : d.level === "2" ? "8px" : "7px")
+      .attr("fill", "black")
+      .style("font-family", "Poppins, sans-serif")
       .style("pointer-events", "none");
 
   const tooltip = d3.select("body").append("div")
