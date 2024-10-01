@@ -89,15 +89,15 @@ function chart(data) {
         return 50;
       }))
       .force("charge", d3.forceManyBody().strength(d => {
-        if (d.level === "1") return -400;
+        if (d.level === "1") return -200;
         if (d.level === "2") return -100;
         return -100;
       }))
       .force("center", d3.forceCenter(width / 2, height / 2))
       .force("collide", d3.forceCollide().radius(d => {
-        if (d.level === "1") return 50;
-        if (d.level === "2") return 30;
-        return 15;
+        if (d.level === "1") return 40;
+        if (d.level === "2") return 20;
+        return 10;
       }))
       .force("byLevel", forceByLevel);
 
