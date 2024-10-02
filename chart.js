@@ -141,15 +141,21 @@ function chart(data) {
       .style("font-family", "Poppins, sans-serif")
       .style("pointer-events", "none");
 
-  const tooltip = d3.select("body").append("div")
+const tooltip = d3.select("body").append("div")
       .attr("class", "tooltip")
-      .style("opacity", 0);
+      .style("opacity", 0)
+      .style("position", "absolute")
+      .style("background-color", "white")
+      .style("border", "1px solid #f6f6f6")
+      .style("padding", "10px")
+      .style("border-radius", "5px")
+      .style("pointer-events", "none");
 
   node.on("mouseover", (event, d) => {
     tooltip.transition()
       .duration(200)
       .style("opacity", .9);
-    tooltip.html(d.tooltip)
+    tooltip.html(d.tooltip || d.id)
       .style("left", (event.pageX + 10) + "px")
       .style("top", (event.pageY - 28) + "px");
   })
