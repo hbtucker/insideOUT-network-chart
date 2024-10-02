@@ -195,7 +195,7 @@ const tooltip = d3.select("body").append("div")
 
     label
         .attr("x", d => d.x)
-        .attr("y", d => d.y);
+        .attr("y", d => d.y)
         .attr("transform", d => `translate(${d.x},${d.y})`);
   });
 
