@@ -12,7 +12,7 @@
     {"id": "Exec Team", "group": "Governance", "level": "2", "tooltip": "Executive Team"},
     {"id": "Enterprise Sales", "group": "Sales", "level": "2", "tooltip": "Enterprise Sales Team"},
     {"id": "SMB Sales Team", "group": "Sales", "level": "2", "tooltip": "SMB Sales Team"},
-    {"id": "Alice Johnson", "group": "Engineering", "level": "3", "tooltip": "Senior Frontend Developer","Maintain public site"},
+    {"id": "Alice Johnson", "group": "Engineering", "level": "3", "tooltip": "Senior Frontend Developer\nMaintain public site"},
     {"id": "Bob Smith", "group": "Engineering", "level": "3", "tooltip": "Backend Engineer"},
     {"id": "Charlie Davis", "group": "Engineering", "level": "3", "tooltip": "Full Stack Developer"},
     {"id": "Diana Lee", "group": "Engineering", "level": "3", "tooltip": "UI/UX Developer"},
