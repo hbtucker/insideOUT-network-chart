@@ -136,7 +136,7 @@ function chart(data) {
       .attr("text-anchor", "middle")
       .attr("dominant-baseline", "central")
       .text(d => d.id)
-      .attr("font-size", d => d.level === "1" ? "9px" : d.level === "2" ? "7px" : "5px")
+      .attr("font-size", d => d.level === "1" ? "8px" : d.level === "2" ? "7px" : "5px")
       .attr("fill", "black")
       .style("font-family", "Poppins, sans-serif")
       .style("pointer-events", "none");
