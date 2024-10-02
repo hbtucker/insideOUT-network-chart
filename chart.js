@@ -125,7 +125,7 @@ function chart(data) {
     .selectAll("circle")
     .data(nodes)
     .join("circle")
-      .attr("r", d => d.level === "1" ? 30 : d.level === "2" ? 25 : 15)
+      .attr("r", d => d.level === "1" ? 25 : d.level === "2" ? 25 : 15)
       .attr("fill", d => colors[d.level - 1]);
 
   const label = svg.append("g")
@@ -136,7 +136,7 @@ function chart(data) {
       .attr("text-anchor", "middle")
       .attr("dominant-baseline", "central")
       .text(d => d.id)
-      .attr("font-size", d => d.level === "1" ? "10px" : d.level === "2" ? "7px" : "5px")
+      .attr("font-size", d => d.level === "1" ? "9px" : d.level === "2" ? "7px" : "5px")
       .attr("fill", "black")
       .style("font-family", "Poppins, sans-serif")
       .style("pointer-events", "none");
