@@ -91,7 +91,7 @@ function chart(data) {
       .force("charge", d3.forceManyBody().strength(d => {
         if (d.level === "1") return -80;
         if (d.level === "2") return -10;
-        return -80;
+        return -50;
       }))
       .force("center", d3.forceCenter(width / 2, height / 2))
       .force("collide", d3.forceCollide().radius(d => {
