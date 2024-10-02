@@ -43,7 +43,7 @@
     {"source": "Product", "target": "UX Team"},
     {"source": "Product", "target": "Strategy Team"},
     {"source": "Governance", "target": "Exec Team"},
-    {"source": "Sales", "target": "Enterprise Sales Team"},
+    {"source": "Sales", "target": "Enterprise Sales"},
     {"source": "Sales", "target": "SMB Sales Team"},
     {"source": "Web Team", "target": "Alice Johnson"},
     {"source": "Web Team", "target": "Bob Smith"},
