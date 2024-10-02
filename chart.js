@@ -97,7 +97,7 @@ function chart(data) {
       .force("collide", d3.forceCollide().radius(d => {
         if (d.level === "1") return 40;
         if (d.level === "2") return 15;
-        return 30;
+        return 15;
       }))
       .force("byLevel", forceByLevel);
 
@@ -125,7 +125,7 @@ function chart(data) {
     .selectAll("circle")
     .data(nodes)
     .join("circle")
-      .attr("r", d => d.level === "1" ? 30 : d.level === "2" ? 20 : 10)
+      .attr("r", d => d.level === "1" ? 25 : d.level === "2" ? 20 : 15)
       .attr("fill", d => colors[d.level - 1]);
 
   const label = svg.append("g")
