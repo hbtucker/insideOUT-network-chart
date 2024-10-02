@@ -125,7 +125,7 @@ function chart(data) {
     .selectAll("circle")
     .data(nodes)
     .join("circle")
-      .attr("r", d => d.level === "1" ? 25 : d.level === "2" ? 20 : 15)
+      .attr("r", d => d.level === "1" ? 25 : d.level === "2" ? 25 : 15)
       .attr("fill", d => colors[d.level - 1]);
 
   const label = svg.append("g")
