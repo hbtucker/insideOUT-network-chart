@@ -1,6 +1,6 @@
 const width = 1200;
 const height = 800;
-const colors = ["#f6f6f6", "#b1b1b1", "#ffc433", "#f4a261", "#e76f51"];
+const colors = ["#b1b1b1", "#f6f6f6", "#ffc433", "#f4a261", "#e76f51"];
 
 function chart(data) {
   const links = data.links.map(d => Object.create(d));
@@ -125,7 +125,7 @@ function chart(data) {
     .selectAll("circle")
     .data(nodes)
     .join("circle")
-      .attr("r", d => d.level === "1" ? 25 : d.level === "2" ? 25 : 15)
+      .attr("r", d => d.level === "1" ? 30 : d.level === "2" ? 25 : 15)
       .attr("fill", d => colors[d.level - 1]);
 
   const label = svg.append("g")
