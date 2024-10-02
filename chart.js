@@ -86,12 +86,12 @@ function chart(data) {
       .force("link", d3.forceLink(links).id(d => d.id).distance(d => {
         if (d.relationship === "Department Connection") return 80;
         if (d.source.level === "1" && d.target.level === "2") return 10;
-        return 40;
+        return 30;
       }))
       .force("charge", d3.forceManyBody().strength(d => {
         if (d.level === "1") return -80;
         if (d.level === "2") return -10;
-        return -40;
+        return -50;
       }))
       .force("center", d3.forceCenter(width / 2, height / 2))
       .force("collide", d3.forceCollide().radius(d => {
@@ -147,6 +147,7 @@ const tooltip = d3.select("body").append("div")
       .style("position", "absolute")
       .style("background-color", "white")
       .style("border", "1px solid #f6f6f6")
+      .style("font-family", "Poppins, sans-serif")
       .style("padding", "10px")
       .style("border-radius", "5px")
       .style("pointer-events", "none");
