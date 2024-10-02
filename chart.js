@@ -97,7 +97,7 @@ function chart(data) {
       .force("collide", d3.forceCollide().radius(d => {
         if (d.level === "1") return 40;
         if (d.level === "2") return 15;
-        return 10;
+        return 15;
       }))
       .force("byLevel", forceByLevel);
 
