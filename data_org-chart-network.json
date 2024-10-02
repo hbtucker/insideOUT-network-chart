@@ -11,7 +11,7 @@
     {"id": "Strategy Team", "group": "Product", "level": "2", "tooltip": "Product Strategy Team"},
     {"id": "Exec Team", "group": "Governance", "level": "2", "tooltip": "Executive Team"},
     {"id": "Enterprise Sales", "group": "Sales", "level": "2", "tooltip": "Enterprise Sales Team"},
-    {"id": "SMB Sales Team", "group": "Sales", "level": "2", "tooltip": "SMB Sales Team"},
+    {"id": "SMB Sales", "group": "Sales", "level": "2", "tooltip": "SMB Sales Team"},
     {"id": "Alice Johnson", "group": "Engineering", "level": "3", "tooltip": "Senior Frontend Developer"},
     {"id": "Bob Smith", "group": "Engineering", "level": "3", "tooltip": "Backend Engineer"},
     {"id": "Charlie Davis", "group": "Engineering", "level": "3", "tooltip": "Full Stack Developer"},
@@ -44,7 +44,7 @@
     {"source": "Product", "target": "Strategy Team"},
     {"source": "Governance", "target": "Exec Team"},
     {"source": "Sales", "target": "Enterprise Sales"},
-    {"source": "Sales", "target": "SMB Sales Team"},
+    {"source": "Sales", "target": "SMB Sales"},
     {"source": "Web Team", "target": "Alice Johnson"},
     {"source": "Web Team", "target": "Bob Smith"},
     {"source": "Web Team", "target": "Charlie Davis"},
@@ -66,8 +66,8 @@
     {"source": "Enterprise Sales", "target": "Paul Thompson"},
     {"source": "Enterprise Sales", "target": "Quinn Anderson"},
     {"source": "Enterprise Sales", "target": "Rachel Murphy"},
-    {"source": "SMB Sales Team", "target": "Samuel Lee"},
-    {"source": "SMB Sales Team", "target": "Tina Foster"},
+    {"source": "SMB Sales", "target": "Samuel Lee"},
+    {"source": "SMB Sales", "target": "Tina Foster"},
     {"source": "Web Team", "target": "Alice Johnson", "relationship": "Works with Bob, Charlie, and Diana in the web dev team"},
     {"source": "Web Team", "target": "Bob Smith", "relationship": "Works with Alice, Charlie, and Diana in the web dev team"},
     {"source": "Web Team", "target": "Charlie Davis", "relationship": "Works with Alice, Bob, and Diana in the web dev team"},
@@ -89,7 +89,7 @@
     {"source": "Enterprise Sales", "target": "Paul Thompson", "relationship": "Works with Quinn and Rachel in the Enterprise Sales team"},
     {"source": "Enterprise Sales", "target": "Quinn Anderson", "relationship": "Works with Paul and Rachel in the Enterprise Sales team"},
     {"source": "Enterprise Sales", "target": "Rachel Murphy", "relationship": "Works with Paul and Quinn in the Enterprise Sales team"},
-    {"source": "SMB Sales Team", "target": "Samuel Lee", "relationship": "Works with Tina in the SMB Sales team"},
-    {"source": "SMB Sales Team", "target": "Tina Foster", "relationship": "Works with Samuel in the SMB Sales team"}
+    {"source": "SMB Sales", "target": "Samuel Lee", "relationship": "Works with Tina in the SMB Sales team"},
+    {"source": "SMB Sales", "target": "Tina Foster", "relationship": "Works with Samuel in the SMB Sales team"}
   ]
 }
