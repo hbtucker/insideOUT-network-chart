@@ -84,7 +84,7 @@ function chart(data) {
 
   const simulation = d3.forceSimulation(nodes)
       .force("link", d3.forceLink(links).id(d => d.id).distance(d => {
-        if (d.relationship === "Department Connection") return 70;
+        if (d.relationship === "Department Connection") return 75;
         if (d.source.level === "1" && d.target.level === "2") return 10;
         return 30;
       }))
