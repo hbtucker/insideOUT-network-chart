@@ -128,18 +128,34 @@ function chart(data) {
       .attr("r", d => d.level === "1" ? 25 : d.level === "2" ? 20 : 15)
       .attr("fill", d => colors[d.level - 1]);
 
-  const label = svg.append("g")
+const label = svg.append("g")
       .attr("class", "labels")
       .selectAll("text")
       .data(nodes)
       .join("text")
       .attr("text-anchor", "middle")
       .attr("dominant-baseline", "central")
-      .text(d => d.id)
-      .attr("font-size", d => d.level === "1" ? "10px" : d.level === "2" ? "7px" : "5px")
-      .attr("fill", "black")
-      .style("font-family", "Poppins, sans-serif")
-      .style("pointer-events", "none");
+      .each(function(d) {
+        const text = d3.select(this);
+        const words = d.id.split(/\s+/);
+        let line = [];
+        let lineNumber = 0;
+        const lineHeight = 1.1; // ems
+        const y = 0;
+        const dy = 0;
+        let tspan = text.text(null).append("tspan").attr("x", 0).attr("y", y).attr("dy", dy + "em");
+        
+        for (let word of words) {
+          line.push(word);
+          tspan.text(line.join(" "));
+          if (tspan.node().getComputedTextLength() > 10) {
+            line.pop();
+            tspan.text(line.join(" "));
+            line = [word];
+            tspan = text.append("tspan").attr("x", 0).attr("y", y).attr("dy", ++lineNumber * lineHeight + dy + "em").text(word);
+          }
+        }
+      })
 
 const tooltip = d3.select("body").append("div")
       .attr("class", "tooltip")
@@ -180,6 +196,7 @@ const tooltip = d3.select("body").append("div")
     label
         .attr("x", d => d.x)
         .attr("y", d => d.y);
+        .attr("transform", d => `translate(${d.x},${d.y})`);
   });
 
   const drag = d3.drag()
