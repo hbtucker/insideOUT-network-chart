@@ -128,6 +128,30 @@ function chart(data) {
       .attr("r", d => d.level === "1" ? 25 : d.level === "2" ? 25 : 15)
       .attr("fill", d => colors[d.level - 1]);
 
+  function wrapText(text, width) {
+    text.each(function() {
+      var text = d3.select(this),
+          words = text.text().split(/\s+/).reverse(),
+          word,
+          line = [],
+          lineNumber = 0,
+          lineHeight = 1.1, // ems
+          y = text.attr("y"),
+          dy = parseFloat(text.attr("dy") || 0),
+          tspan = text.text(null).append("tspan").attr("x", 0).attr("y", y).attr("dy", dy + "em");
+      while (word = words.pop()) {
+        line.push(word);
+        tspan.text(line.join(" "));
+        if (tspan.node().getComputedTextLength() > width) {
+          line.pop();
+          tspan.text(line.join(" "));
+          line = [word];
+          tspan = text.append("tspan").attr("x", 0).attr("y", y).attr("dy", ++lineNumber * lineHeight + dy + "em").text(word);
+        }
+      }
+    });
+  }
+
   const label = svg.append("g")
       .attr("class", "labels")
       .selectAll("text")
@@ -139,7 +163,8 @@ function chart(data) {
       .attr("font-size", d => d.level === "1" ? "8px" : d.level === "2" ? "7px" : "5px")
       .attr("fill", "black")
       .style("font-family", "Poppins, sans-serif")
-      .style("pointer-events", "none");
+      .style("pointer-events", "none")
+      .call(wrapText, 10);
 
 const tooltip = d3.select("body").append("div")
       .attr("class", "tooltip")
@@ -152,13 +177,21 @@ const tooltip = d3.select("body").append("div")
       .style("border-radius", "5px")
       .style("pointer-events", "none");
 
+  function wrapTooltip(text, width) {
+    return text.replace(
+      new RegExp(`(?![^\\n]{1,${width}}$)([^\\n]{1,${width}})\\s`, 'g'),
+      '$1\n'
+    );
+  }
+
   node.on("mouseover", (event, d) => {
     tooltip.transition()
       .duration(200)
       .style("opacity", .9);
-    tooltip.html(d.tooltip || d.id)
+    tooltip.html(wrapTooltip(d.tooltip || d.id, 10))
       .style("left", (event.pageX + 10) + "px")
-      .style("top", (event.pageY - 28) + "px");
+      .style("top", (event.pageY - 28) + "px")
+      .style("white-space", "pre-line");
   })
   .on("mouseout", () => {
     tooltip.transition()
@@ -178,8 +211,7 @@ const tooltip = d3.select("body").append("div")
         .attr("cy", d => d.y);
 
     label
-        .attr("x", d => d.x)
-        .attr("y", d => d.y);
+        .attr("transform", d => `translate(${d.x},${d.y})`);
   });
 
   const drag = d3.drag()
