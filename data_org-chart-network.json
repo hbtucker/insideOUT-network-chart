@@ -16,7 +16,7 @@
     {"id": "Bob Smith", "group": "Engineering", "level": "3", "tooltip": "Backend Engineer"},
     {"id": "Charlie Davis", "group": "Engineering", "level": "3", "tooltip": "Full Stack Developer"},
     {"id": "Diana Lee", "group": "Engineering", "level": "3", "tooltip": "UI/UX Developer"},
-    {"id": "Eva Martinez", "group": "Engineering", "level": "3", "tooltip": "iOS Developer"},
+    {"id": "Eva Martinez", "group": "Engineering", "level": "3", "tooltip": "iOS Developer: Responsible for iOS app and store deploys"},
     {"id": "Frank Chen", "group": "Engineering", "level": "3", "tooltip": "Android Developer"},
     {"id": "Grace Kim", "group": "Engineering", "level": "3", "tooltip": "Mobile QA Engineer"},
     {"id": "Henry Wilson", "group": "Engineering", "level": "3", "tooltip": "Cross-Platform Team Developer"},
