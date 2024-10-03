@@ -170,7 +170,7 @@ const label = svg.append("g")
       words.forEach((word, i) => {
         text.append("tspan")
           .attr("x", 0)
-          .attr("dy", i === 0 ? (isLong ? "-0.45em" : "0.35em") : "1.1em")
+          .attr("dy", i === 0 ? (isLong ? "-0.40em" : "0.35em") : "1.1em")
           .text(word);
       });
     });
