@@ -130,7 +130,26 @@ function chart(data) {
 
   function wrapLabel(text) {
     if (text.length <= 10) return text;
-    return text.slice(0, 10) + '\n' + text.slice(10);
+    const words = text.split(/\s+/);
+    let line = '';
+    let result = '';
+    for (let i = 0; i < words.length; i++) {
+      if ((line + words[i]).length > 10) {
+        if (line) {
+          result += line + '\n';
+          line = words[i];
+        } else {
+          result += words[i] + '\n';
+        }
+      } else {
+        if (line) line += ' ';
+        line += words[i];
+      }
+    }
+    if (line) {
+      result += line;
+    }
+    return result.trim();
   }
 
   const label = svg.append("g")
