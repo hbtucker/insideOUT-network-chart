@@ -34,8 +34,8 @@
     {"id": "Quinn Anderson", "group": "Sales", "level": "3", "tooltip": "Solutions Architect"},
     {"id": "Rachel Murphy", "group": "Sales", "level": "3", "tooltip": "Sales Engineer"},
     {"id": "Samuel Lee", "group": "Sales", "level": "3", "tooltip": "SMB Sales Representative"},
-    {"id": "Tina Foster", "group": "Sales", "level": "3", "tooltip": "Inside Sales Specialist"}
-        {"id": "Engineering", "group": "Engineering", "level": "1", "tooltip": "Engineering Department"},
+    {"id": "Tina Foster", "group": "Sales", "level": "3", "tooltip": "Inside Sales Specialist"},
+    {"id": "Engineering", "group": "Engineering", "level": "1", "tooltip": "Engineering Department"},
     {"id": "Product", "group": "Product", "level": "1", "tooltip": "Product Department"},
     {"id": "Governance", "group": "Governance", "level": "1", "tooltip": "Governance Department"},
     {"id": "Sales", "group": "Sales", "level": "1", "tooltip": "Sales Department"},
@@ -156,7 +156,7 @@
     {"source": "Enterprise Sales", "target": "Quinn Anderson", "relationship": "Works with Paul and Rachel in the Enterprise Sales team"},
     {"source": "Enterprise Sales", "target": "Rachel Murphy", "relationship": "Works with Paul and Quinn in the Enterprise Sales team"},
     {"source": "SMB Sales", "target": "Samuel Lee", "relationship": "Works with Tina in the SMB Sales team"},
-    {"source": "SMB Sales", "target": "Tina Foster", "relationship": "Works with Samuel in the SMB Sales team"}
+    {"source": "SMB Sales", "target": "Tina Foster", "relationship": "Works with Samuel in the SMB Sales team"},
     {"source": "Web Team", "target": "Alice Johnson", "relationship": "Works with Bob, Charlie, and Diana in the web dev team"},
     {"source": "Web Team", "target": "Bob Smith", "relationship": "Works with Alice, Charlie, and Diana in the web dev team"},
     {"source": "Web Team", "target": "Charlie Davis", "relationship": "Works with Alice, Bob, and Diana in the web dev team"},
