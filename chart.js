@@ -152,28 +152,28 @@ function chart(data) {
     return result.trim();
   }
 
-  const label = svg.append("g")
-      .attr("class", "labels")
-      .selectAll("text")
-      .data(nodes)
-      .join("text")
-      .attr("text-anchor", "middle")
-      .attr("dominant-baseline", "central")
-      .attr("font-size", d => d.level === "1" ? "8px" : d.level === "2" ? "7px" : "5px")
-      .attr("fill", "black")
-      .style("font-family", "Poppins, sans-serif")
-      .style("pointer-events", "none")
-      .each(function(d) {
-        const text = d3.select(this);
-        const words = wrapLabel(d.id).split('\n');
-        text.text(null);
-        words.forEach((word, i) => {
-          text.append("tspan")
-            .attr("x", 0)
-            .attr("dy", i ? "1.1em" : 0)
-            .text(word);
-        });
+const label = svg.append("g")
+    .attr("class", "labels")
+    .selectAll("text")
+    .data(nodes)
+    .join("text")
+    .attr("text-anchor", "middle")
+    .attr("font-size", d => d.level === "1" ? "8px" : d.level === "2" ? "7px" : "6px")
+    .attr("fill", "black")
+    .style("font-family", "Poppins, sans-serif")
+    .style("pointer-events", "none")
+    .each(function(d) {
+      const text = d3.select(this);
+      const words = wrapLabel(d.id).split('\n');
+      text.text(null);
+      const isLong = words.length > 1;
+      words.forEach((word, i) => {
+        text.append("tspan")
+          .attr("x", 0)
+          .attr("dy", i === 0 ? (isLong ? "-0.7em" : "0.35em") : "1.1em")
+          .text(word);
       });
+    });
 
 const tooltip = d3.select("body").append("div")
       .attr("class", "tooltip")
