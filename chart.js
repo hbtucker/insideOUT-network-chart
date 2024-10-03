@@ -128,28 +128,9 @@ function chart(data) {
       .attr("r", d => d.level === "1" ? 25 : d.level === "2" ? 25 : 15)
       .attr("fill", d => colors[d.level - 1]);
 
-  function wrapText(text, width) {
-    text.each(function() {
-      var text = d3.select(this),
-          words = text.text().split(/\s+/).reverse(),
-          word,
-          line = [],
-          lineNumber = 0,
-          lineHeight = 1.1, // ems
-          y = text.attr("y"),
-          dy = parseFloat(text.attr("dy") || 0),
-          tspan = text.text(null).append("tspan").attr("x", 0).attr("y", y).attr("dy", dy + "em");
-      while (word = words.pop()) {
-        line.push(word);
-        tspan.text(line.join(" "));
-        if (tspan.node().getComputedTextLength() > width) {
-          line.pop();
-          tspan.text(line.join(" "));
-          line = [word];
-          tspan = text.append("tspan").attr("x", 0).attr("y", y).attr("dy", ++lineNumber * lineHeight + dy + "em").text(word);
-        }
-      }
-    });
+  function wrapLabel(text) {
+    if (text.length <= 10) return text;
+    return text.slice(0, 10) + '\n' + text.slice(10);
   }
 
   const label = svg.append("g")
@@ -159,12 +140,21 @@ function chart(data) {
       .join("text")
       .attr("text-anchor", "middle")
       .attr("dominant-baseline", "central")
-      .text(d => d.id)
       .attr("font-size", d => d.level === "1" ? "8px" : d.level === "2" ? "7px" : "5px")
       .attr("fill", "black")
       .style("font-family", "Poppins, sans-serif")
       .style("pointer-events", "none")
-      .call(wrapText, 10);
+      .each(function(d) {
+        const text = d3.select(this);
+        const words = wrapLabel(d.id).split('\n');
+        text.text(null);
+        words.forEach((word, i) => {
+          text.append("tspan")
+            .attr("x", 0)
+            .attr("dy", i ? "1.1em" : 0)
+            .text(word);
+        });
+      });
 
 const tooltip = d3.select("body").append("div")
       .attr("class", "tooltip")
