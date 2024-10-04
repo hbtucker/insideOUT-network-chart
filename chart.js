@@ -256,16 +256,6 @@ function chart(data, isDarkMode = false) {
   return svg.node();
 }
 
-// Load data and create chart
-d3.json("data_org-chart-network.json").then(data => {
-  let isDarkMode = false;
-
-  function updateChart() {
-    d3.select("#chart").selectAll("*").remove();
-    const chartElement = chart(data, isDarkMode);
-    document.getElementById("chart").appendChild(chartElement);
-  }
-
   // Dark mode toggle functionality
   function updateColors(isDarkMode) {
     const textColor = isDarkMode ? 'white' : 'black';
@@ -308,6 +298,13 @@ d3.json("data_org-chart-network.json").then(data => {
 
   return svg.node();
 }
-  `;
-  document.head.appendChild(style);
-}).catch(error => console.error("Error loading the data: ", error));
+
+// Load data and create chart
+d3.json("data_org-chart-network.json").then(data => {
+  let isDarkMode = false;
+
+  function updateChart() {
+    d3.select("#chart").selectAll("*").remove();
+    const chartElement = chart(data, isDarkMode);
+    document.getElementById("chart").appendChild(chartElement);
+  }
