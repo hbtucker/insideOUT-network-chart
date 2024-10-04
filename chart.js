@@ -1,6 +1,5 @@
-// chart.js
-const width = 1200;
-const height = 800;
+const width = 1920;
+const height = 1080;
 const lightColors = ["#b1b1b1", "#f6f6f6", "#ffc433", "#f4a261", "#e76f51"];
 const darkColors = ["#6b6b6b", "#3d3d3d", "#b38600", "#a85c2d", "#a13c2b"];
 
@@ -267,18 +266,75 @@ d3.json("data_org-chart-network.json").then(data => {
     document.getElementById("chart").appendChild(chartElement);
   }
 
-  // Create dark mode toggle button
-  const toggleButton = d3.select("body")
-    .insert("button", ":first-child")
-    .text("Toggle Dark Mode")
+  // Create dark mode switch
+  const switchContainer = d3.select("body")
+    .insert("div", ":first-child")
+    .attr("class", "switch-container")
     .style("position", "absolute")
     .style("top", "10px")
     .style("left", "10px")
-    .style("z-index", "1000")
-    .on("click", () => {
-      isDarkMode = !isDarkMode;
+    .style("z-index", "1000");
+
+  switchContainer.append("input")
+    .attr("type", "checkbox")
+    .attr("id", "darkModeSwitch")
+    .attr("class", "switch-checkbox")
+    .on("change", function() {
+      isDarkMode = this.checked;
       updateChart();
+      updateSwitchLabel();
     });
 
+  switchContainer.append("label")
+    .attr("for", "darkModeSwitch")
+    .attr("class", "switch-label")
+    .html('<span class="switch-button"></span>');
+
+  const switchLabel = switchContainer.append("span")
+    .attr("class", "switch-text")
+    .style("margin-left", "10px")
+    .style("font-family", "Poppins, sans-serif")
+    .style("font-size", "14px");
+
+  function updateSwitchLabel() {
+    switchLabel.text(isDarkMode ? "Dark Mode" : "Light Mode");
+  }
+
+  updateSwitchLabel();
   updateChart();
+
+  // Add CSS styles for the switch
+  const style = document.createElement('style');
+  style.textContent = `
+    .switch-checkbox {
+      display: none;
+    }
+    .switch-label {
+      display: inline-block;
+      width: 60px;
+      height: 30px;
+      background-color: #ccc;
+      border-radius: 15px;
+      position: relative;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    .switch-label .switch-button {
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background-color: white;
+      transition: transform 0.3s;
+    }
+    .switch-checkbox:checked + .switch-label {
+      background-color: #2196F3;
+    }
+    .switch-checkbox:checked + .switch-label .switch-button {
+      transform: translateX(30px);
+    }
+  `;
+  document.head.appendChild(style);
 }).catch(error => console.error("Error loading the data: ", error));
