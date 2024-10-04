@@ -291,13 +291,13 @@ d3.json("data_org-chart-network.json").then(data => {
     // Update logo
     const logo = document.getElementById('logo');
     if (logo) {
-      logo.setAttribute("href", isDarkMode ? 'dark-logo.png' : 'logo.png');
+      logo.src = isDarkMode ? 'dark-logo.png' : 'logo.png';
     }
 
     // Update toggle button text
     const darkModeToggle = document.getElementById('darkModeToggle');
     if (darkModeToggle) {
-      darkModeToggle.textContent = isDarkMode ? "Toggle Light Mode" : "Toggle Dark Mode";
+      darkModeToggle.textContent = isDarkMode ? "Switch to Light Mode" : "Switch to Dark Mode";
     }
   }
 
@@ -308,43 +308,16 @@ d3.json("data_org-chart-network.json").then(data => {
     updateColors(isDarkMode);
   }
 
-  // Create dark mode toggle button
-  const darkModeToggle = d3.select("body")
-    .insert("button", ":first-child")
-    .attr("id", "darkModeToggle")
-    .text("Toggle Dark Mode")
-    .style("position", "absolute")
-    .style("top", "10px")
-    .style("left", "10px")
-    .style("z-index", "1000")
-    .style("font-family", "Poppins, sans-serif")
-    .style("padding", "8px 16px")
-    .style("background-color", "#1f1f1f")
-    .style("border", "none")
-    .style("border-radius", "5px")
-    .style("cursor", "pointer");
-
   // Set up event listener for dark mode toggle
-  darkModeToggle.on("click", () => {
-    isDarkMode = !isDarkMode;
-    document.body.classList.toggle('dark-mode', isDarkMode);
-    updateChart();
-  });
+  const darkModeToggle = document.getElementById('darkModeToggle');
+  if (darkModeToggle) {
+    darkModeToggle.addEventListener('click', () => {
+      isDarkMode = !isDarkMode;
+      document.body.classList.toggle('dark-mode', isDarkMode);
+      updateChart();
+    });
+  }
 
   updateChart();
-
-  // Add CSS styles for dark mode
-  const style = document.createElement('style');
-  style.textContent = `
-    body.dark-mode {
-      background-color: #191919;
-      color: white;
-    }
-    body.dark-mode #darkModeToggle {
-      background-color: #333;
-      color: white;
-    }
-  `;
-  document.head.appendChild(style);
 
 }).catch(error => console.error("Error loading the data: ", error));
