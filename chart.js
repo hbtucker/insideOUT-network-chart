@@ -305,6 +305,6 @@ d3.json("data_org-chart-network.json").then(data => {
       updateColors(isDarkMode);
     });
   }
-  `;
-  document.head.appendChild(style);
-}).catch(error => console.error("Error loading the data: ", error));
+  
+    return svg.node();
+}
