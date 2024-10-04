@@ -5,7 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Organization Chart</title>
     <script src="https://d3js.org/d3.v7.min.js"></script>
-</head>
+    </head>
+    <style>
+            #logo {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 100px;
+            height: auto;
+            z-index: 1000;
+        }
+</style>
+<body>
+   <div id="chart">
+        <img id="logo" src="logo.png" alt="Logo">
+    </div>
 <body>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;400;600&display=swap" rel="stylesheet">
     <div id="chart"></div>
