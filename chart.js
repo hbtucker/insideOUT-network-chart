@@ -294,10 +294,9 @@ function chart(data, isDarkMode = false) {
       const isDarkMode = document.body.classList.toggle('dark-mode');
       updateColors(isDarkMode);
     });
-    }
 
   return svg.node();
-}
+};
 
 // Load data and create chart
 d3.json("data_org-chart-network.json").then(data => {
