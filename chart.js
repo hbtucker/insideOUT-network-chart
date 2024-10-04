@@ -116,15 +116,6 @@ function chart(data, isDarkMode = false) {
       .attr("height", height)
       .attr("fill", backgroundColor);
 
-  // Add logo
-  const logo = svg.append("image")
-      .attr("id", "logo")
-      .attr("x", width - 150)
-      .attr("y", 10)
-      .attr("width", 140)
-      .attr("height", 40)
-      .attr("href", isDarkMode ? "dark-logo.png" : "logo.png");
-
   const link = svg.append("g")
       .attr("stroke", isDarkMode ? "#666" : "#999")
       .attr("stroke-opacity", 0.6)
