@@ -308,3 +308,12 @@ d3.json("data_org-chart-network.json").then(data => {
   
     return svg.node();
 }
+
+ // Load data and create chart
+d3.json("data_org-chart-network.json").then(data => {
+  const chartElement = chart(data);
+  document.getElementById("chart").appendChild(chartElement);
+}).catch(error => console.error("Error loading the data: ", error));
+
+                                            
+                                            
