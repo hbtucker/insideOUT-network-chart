@@ -107,13 +107,23 @@ function chart(data, isDarkMode = false) {
       .force("byLevel", forceByLevel);
 
   const svg = d3.create("svg")
-      .attr("viewBox", [0, 0, width, height]);
+      .attr("viewBox", [0, 0, width, height])
+      .attr("style", `max-width: 100%; height: auto; display: block; margin: 0 -8px; background: ${backgroundColor}; cursor: pointer; font-family: 'Poppins', sans-serif;`);
 
   // Add background
   const background = svg.append("rect")
       .attr("width", width)
       .attr("height", height)
       .attr("fill", backgroundColor);
+
+  // Add logo
+  const logo = svg.append("image")
+      .attr("id", "logo")
+      .attr("x", width - 150)
+      .attr("y", 10)
+      .attr("width", 140)
+      .attr("height", 40)
+      .attr("href", isDarkMode ? "dark-logo.png" : "logo.png");
 
   const link = svg.append("g")
       .attr("stroke", isDarkMode ? "#666" : "#999")
@@ -256,28 +266,32 @@ function chart(data, isDarkMode = false) {
   return svg.node();
 }
 
-  // Dark mode toggle functionality
+// Load data and create chart
+d3.json("data_org-chart-network.json").then(data => {
+  let isDarkMode = false;
+
   function updateColors(isDarkMode) {
     const textColor = isDarkMode ? 'white' : 'black';
     const backgroundColor = isDarkMode ? '#191919' : '#fff';
     
-    color.range(isDarkMode ? darkerColors : richerColors);
+    d3.select("svg")
+      .attr("style", `max-width: 100%; height: auto; display: block; margin: 0 -8px; background: ${backgroundColor}; cursor: pointer; font-family: 'Poppins', sans-serif;`);
 
-    svg.attr("style", `max-width: 100%; height: auto; display: block; margin: 0 -8px; background: ${backgroundColor}; cursor: pointer; font-family: 'Poppins', sans-serif;`);
+    d3.selectAll("circle")
+      .attr("fill", d => (isDarkMode ? darkColors : lightColors)[d.level - 1]);
 
-    path.attr("fill", (d) => {
-      while (d.depth > 1) d = d.parent;
-      return color(d.data.name);
-    });
+    d3.selectAll(".labels text")
+      .attr("fill", textColor);
 
-    label.attr("fill", textColor);
-    tooltipText.attr("fill", textColor);
-    tooltipRect.attr("fill", isDarkMode ? "#333" : "#f6f6f6");
+    d3.select(".tooltip")
+      .style("background-color", isDarkMode ? "#333" : "white")
+      .style("color", isDarkMode ? "#fff" : "#000")
+      .style("border", `1px solid ${isDarkMode ? "#666" : "#f6f6f6"}`);
 
     // Update logo
     const logo = document.getElementById('logo');
     if (logo) {
-      logo.src = isDarkMode ? 'dark-logo.png' : 'logo.png';
+      logo.setAttribute("href", isDarkMode ? 'dark-logo.png' : 'logo.png');
     }
 
     // Update toggle button text
@@ -287,23 +301,50 @@ function chart(data, isDarkMode = false) {
     }
   }
 
-  // Set up event listener for dark mode toggle
-  const darkModeToggle = document.getElementById('darkModeToggle');
-  if (darkModeToggle) {
-    darkModeToggle.addEventListener('click', () => {
-      const isDarkMode = document.body.classList.toggle('dark-mode');
-      updateColors(isDarkMode);
-    });
-
-  return svg.node();
-};
-
-// Load data and create chart
-d3.json("data_org-chart-network.json").then(data => {
-  let isDarkMode = false;
-
   function updateChart() {
     d3.select("#chart").selectAll("*").remove();
     const chartElement = chart(data, isDarkMode);
     document.getElementById("chart").appendChild(chartElement);
+    updateColors(isDarkMode);
   }
+
+  // Create dark mode toggle button
+  const darkModeToggle = d3.select("body")
+    .insert("button", ":first-child")
+    .attr("id", "darkModeToggle")
+    .text("Toggle Dark Mode")
+    .style("position", "absolute")
+    .style("top", "10px")
+    .style("left", "10px")
+    .style("z-index", "1000")
+    .style("font-family", "Poppins, sans-serif")
+    .style("padding", "8px 16px")
+    .style("background-color", "#f0f0f0")
+    .style("border", "none")
+    .style("border-radius", "4px")
+    .style("cursor", "pointer");
+
+  // Set up event listener for dark mode toggle
+  darkModeToggle.on("click", () => {
+    isDarkMode = !isDarkMode;
+    document.body.classList.toggle('dark-mode', isDarkMode);
+    updateChart();
+  });
+
+  updateChart();
+
+  // Add CSS styles for dark mode
+  const style = document.createElement('style');
+  style.textContent = `
+    body.dark-mode {
+      background-color: #191919;
+      color: white;
+    }
+    body.dark-mode #darkModeToggle {
+      background-color: #333;
+      color: white;
+    }
+  `;
+  document.head.appendChild(style);
+
+}).catch(error => console.error("Error loading the data: ", error));
