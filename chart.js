@@ -1,3 +1,4 @@
+// chart.js
 const width = 1200;
 const height = 800;
 const lightColors = ["#b1b1b1", "#f6f6f6", "#ffc433", "#f4a261", "#e76f51"];
