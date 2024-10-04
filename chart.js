@@ -319,9 +319,9 @@ d3.json("data_org-chart-network.json").then(data => {
     .style("z-index", "1000")
     .style("font-family", "Poppins, sans-serif")
     .style("padding", "8px 16px")
-    .style("background-color", "#f0f0f0")
+    .style("background-color", "#1f1f1f")
     .style("border", "none")
-    .style("border-radius", "4px")
+    .style("border-radius", "5px")
     .style("cursor", "pointer");
 
   // Set up event listener for dark mode toggle
