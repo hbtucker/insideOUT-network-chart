@@ -274,7 +274,7 @@ d3.json("data_org-chart-network.json").then(data => {
     const textColor = isDarkMode ? 'white' : 'black';
     const backgroundColor = isDarkMode ? '#191919' : '#fff';
     
-    d3.select("svg")
+    d3.select("#chart svg")
       .attr("style", `max-width: 100%; height: auto; display: block; margin: 0 -8px; background: ${backgroundColor}; cursor: pointer; font-family: 'Poppins', sans-serif;`);
 
     d3.selectAll("circle")
@@ -302,7 +302,9 @@ d3.json("data_org-chart-network.json").then(data => {
   }
 
   function updateChart() {
-    d3.select("#chart").selectAll("*").remove();
+    // Remove only the SVG, not the entire contents of #chart
+    d3.select("#chart svg").remove();
+    
     const chartElement = chart(data, isDarkMode);
     document.getElementById("chart").appendChild(chartElement);
     updateColors(isDarkMode);
@@ -318,6 +320,9 @@ d3.json("data_org-chart-network.json").then(data => {
     });
   }
 
-  updateChart();
+  // Initial chart creation
+  const initialChartElement = chart(data, isDarkMode);
+  document.getElementById("chart").appendChild(initialChartElement);
+  updateColors(isDarkMode);
 
 }).catch(error => console.error("Error loading the data: ", error));
