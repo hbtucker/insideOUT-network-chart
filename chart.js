@@ -304,7 +304,6 @@ d3.json("data_org-chart-network.json").then(data => {
       const isDarkMode = document.body.classList.toggle('dark-mode');
       updateColors(isDarkMode);
     });
-  }
   `;
   document.head.appendChild(style);
 }).catch(error => console.error("Error loading the data: ", error));
