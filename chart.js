@@ -1,8 +1,13 @@
 const width = 1200;
 const height = 800;
-const colors = ["#b1b1b1", "#f6f6f6", "#ffc433", "#f4a261", "#e76f51"];
+const lightColors = ["#b1b1b1", "#f6f6f6", "#ffc433", "#f4a261", "#e76f51"];
+const darkColors = ["#6b6b6b", "#3d3d3d", "#b38600", "#a85c2d", "#a13c2b"];
 
-function chart(data) {
+function chart(data, isDarkMode = false) {
+  const colors = isDarkMode ? darkColors : lightColors;
+  const backgroundColor = isDarkMode ? "#191919" : "#fff";
+  const textColor = isDarkMode ? "#fff" : "#000";
+
   const links = data.links.map(d => Object.create(d));
   const nodes = data.nodes.map(d => Object.create(d));
 
@@ -105,13 +110,13 @@ function chart(data) {
       .attr("viewBox", [0, 0, width, height]);
 
   // Add background
-  svg.append("rect")
+  const background = svg.append("rect")
       .attr("width", width)
       .attr("height", height)
-      .attr("fill", "#fff");
+      .attr("fill", backgroundColor);
 
   const link = svg.append("g")
-      .attr("stroke", "#999")
+      .attr("stroke", isDarkMode ? "#666" : "#999")
       .attr("stroke-opacity", 0.6)
     .selectAll("line")
     .data(links)
@@ -120,7 +125,7 @@ function chart(data) {
       .attr("stroke-dasharray", d => d.relationship === "Department Connection" ? "5,5" : "none");
 
   const node = svg.append("g")
-      .attr("stroke", "#fff")
+      .attr("stroke", isDarkMode ? "#333" : "#fff")
       .attr("stroke-width", 1.5)
     .selectAll("circle")
     .data(nodes)
@@ -152,35 +157,36 @@ function chart(data) {
     return result.trim();
   }
 
-const label = svg.append("g")
-    .attr("class", "labels")
-    .selectAll("text")
-    .data(nodes)
-    .join("text")
-    .attr("text-anchor", "middle")
-    .attr("font-size", d => d.level === "1" ? "8px" : d.level === "2" ? "7px" : "5px")
-    .attr("fill", "black")
-    .style("font-family", "Poppins, sans-serif")
-    .style("pointer-events", "none")
-    .each(function(d) {
-      const text = d3.select(this);
-      const words = wrapLabel(d.id).split('\n');
-      text.text(null);
-      const isLong = words.length > 1;
-      words.forEach((word, i) => {
-        text.append("tspan")
-          .attr("x", 0)
-          .attr("dy", i === 0 ? (isLong ? "-0.35em" : "0.35em") : "1.1em")
-          .text(word);
+  const label = svg.append("g")
+      .attr("class", "labels")
+      .selectAll("text")
+      .data(nodes)
+      .join("text")
+      .attr("text-anchor", "middle")
+      .attr("font-size", d => d.level === "1" ? "8px" : d.level === "2" ? "7px" : "5px")
+      .attr("fill", textColor)
+      .style("font-family", "Poppins, sans-serif")
+      .style("pointer-events", "none")
+      .each(function(d) {
+        const text = d3.select(this);
+        const words = wrapLabel(d.id).split('\n');
+        text.text(null);
+        const isLong = words.length > 1;
+        words.forEach((word, i) => {
+          text.append("tspan")
+            .attr("x", 0)
+            .attr("dy", i === 0 ? (isLong ? "-0.35em" : "0.35em") : "1.1em")
+            .text(word);
+        });
       });
-    });
 
-const tooltip = d3.select("body").append("div")
+  const tooltip = d3.select("body").append("div")
       .attr("class", "tooltip")
       .style("opacity", 0)
       .style("position", "absolute")
-      .style("background-color", "white")
-      .style("border", "1px solid #f6f6f6")
+      .style("background-color", isDarkMode ? "#333" : "white")
+      .style("color", isDarkMode ? "#fff" : "#000")
+      .style("border", `1px solid ${isDarkMode ? "#666" : "#f6f6f6"}`)
       .style("font-family", "Poppins, sans-serif")
       .style("padding", "10px")
       .style("border-radius", "5px")
@@ -252,6 +258,26 @@ const tooltip = d3.select("body").append("div")
 
 // Load data and create chart
 d3.json("data_org-chart-network.json").then(data => {
-  const chartElement = chart(data);
-  document.getElementById("chart").appendChild(chartElement);
+  let isDarkMode = false;
+
+  function updateChart() {
+    d3.select("#chart").selectAll("*").remove();
+    const chartElement = chart(data, isDarkMode);
+    document.getElementById("chart").appendChild(chartElement);
+  }
+
+  // Create dark mode toggle button
+  const toggleButton = d3.select("body")
+    .insert("button", ":first-child")
+    .text("Toggle Dark Mode")
+    .style("position", "absolute")
+    .style("top", "10px")
+    .style("left", "10px")
+    .style("z-index", "1000")
+    .on("click", () => {
+      isDarkMode = !isDarkMode;
+      updateChart();
+    });
+
+  updateChart();
 }).catch(error => console.error("Error loading the data: ", error));
