@@ -3,7 +3,7 @@ const height = 600;
 const lightColors = ["#b1b1b1", "#f6f6f6", "#ffc433", "#f4a261", "#e76f51"];
 const darkColors = ["#6b6b6b", "#3d3d3d", "#b34a00", "#a85c2d", "#a13c2b"];
 
-function chart(data, isDarkMode = false) {
+function chart(data, isDarkMode = true) {
   const colors = isDarkMode ? darkColors : lightColors;
   const backgroundColor = isDarkMode ? "#191919" : "#fff";
   const textColor = isDarkMode ? "#fff" : "#000";
@@ -259,7 +259,7 @@ function chart(data, isDarkMode = false) {
 
 // Load data and create chart
 d3.json("data_org-chart-network.json").then(data => {
-  let isDarkMode = false;
+  let isDarkMode = true; // Set default to dark mode
 
   function updateColors(isDarkMode) {
     const textColor = isDarkMode ? 'white' : 'black';
@@ -312,6 +312,7 @@ d3.json("data_org-chart-network.json").then(data => {
   }
 
   // Initial chart creation
+  document.body.classList.add('dark-mode'); // Add dark-mode class to body initially
   const initialChartElement = chart(data, isDarkMode);
   document.getElementById("chart").appendChild(initialChartElement);
   updateColors(isDarkMode);
