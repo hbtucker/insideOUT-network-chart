@@ -1,5 +1,5 @@
-const width = 1200;
-const height = 800;
+const width = 1600;
+const height = 1200;
 const lightColors = ["#b1b1b1", "#f6f6f6", "#ffc433", "#f4a261", "#e76f51"];
 const darkColors = ["#6b6b6b", "#3d3d3d", "#b38600", "#a85c2d", "#a13c2b"];
 
