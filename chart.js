@@ -1,7 +1,7 @@
 const width = 900;
 const height = 600;
 const lightColors = ["#b1b1b1", "#f6f6f6", "#ffc433", "#f4a261", "#e76f51"];
-const darkColors = ["#6b6b6b", "#3d3d3d", "#b35900", "#a85c2d", "#a13c2b"];
+const darkColors = ["#6b6b6b", "#3d3d3d", "b34a00", "#a85c2d", "#a13c2b"];
 
 function chart(data, isDarkMode = false) {
   const colors = isDarkMode ? darkColors : lightColors;
