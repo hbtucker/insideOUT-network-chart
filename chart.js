@@ -288,7 +288,7 @@ d3.json("data_org-chart-network.json").then(data => {
     // Update toggle button text
     const darkModeToggle = document.getElementById('darkModeToggle');
     if (darkModeToggle) {
-      darkModeToggle.textContent = isDarkMode ? "Toggle Light Mode" : "Toggle Dark Mode";
+      darkModeToggle.textContent = isDarkMode ? "Light Mode" : "Dark Mode";
     }
   }
 
